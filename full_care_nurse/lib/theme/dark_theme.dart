@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 ThemeData dark = ThemeData(
   fontFamily: 'Roboto',
-  primaryColor: const Color(0xFF54b46b),
-  secondaryHeaderColor: const Color(0xFF009f67),
+  primaryColor: const Color(0xFF1e81b0),
+  secondaryHeaderColor: const Color.fromARGB(255, 97, 164, 195),
   disabledColor: const Color(0xFF6f7275),
   brightness: Brightness.dark,
   hintColor: const Color(0xFFbebebe),
