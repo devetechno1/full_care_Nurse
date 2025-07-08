@@ -37,7 +37,7 @@
 
     <application
         tools:replace="android:label"
-        android:label="Full Care U Employee"
+        android:label="FULL CARE PARTNER"
         android:name="${applicationName}"
         android:extractNativeLibs="true"
         android:requestLegacyExternalStorage="true"
