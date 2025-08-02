@@ -36,7 +36,7 @@ class AuthController extends GetxController implements GetxService {
   int _identityTypeIndex = 0;
   int get identityTypeIndex => _identityTypeIndex;
   
-  final List<String?> _dmTypeList = ['freelancer', 'salary_based'];
+  final List<String?> _dmTypeList = ['freelancer'];
   List<String?> get dmTypeList => _dmTypeList;
   
   int _dmTypeIndex = 0;
