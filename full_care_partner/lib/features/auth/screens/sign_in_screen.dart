@@ -144,7 +144,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       TextSpan(text: 'delivery_man'.tr, style: robotoMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color)),
                     ])),
                   ) : const SizedBox(),
-
+                  const SizedBox(height: 30),
                 ]);
               }),
             ),

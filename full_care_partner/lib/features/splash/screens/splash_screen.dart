@@ -13,6 +13,8 @@ import 'package:sixam_mart_delivery/util/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../theme/colors.dart';
+
 class SplashScreen extends StatefulWidget {
   final NotificationBodyModel? body;
   const SplashScreen({super.key, required this.body});
@@ -29,22 +31,28 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    if(Get.find<AuthController>().isLoggedIn()) {
+    if (Get.find<AuthController>().isLoggedIn()) {
       Get.find<ProfileController>().getProfile();
     }
 
     bool firstTime = true;
-    _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
-      bool isConnected = result.contains(ConnectivityResult.wifi) || result.contains(ConnectivityResult.mobile);
+    _onConnectivityChanged = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
+      bool isConnected = result.contains(ConnectivityResult.wifi) ||
+          result.contains(ConnectivityResult.mobile);
 
-      if(!firstTime) {
-        isConnected ? ScaffoldMessenger.of(Get.context!).hideCurrentSnackBar() : const SizedBox();
+      if (!firstTime) {
+        isConnected
+            ? ScaffoldMessenger.of(Get.context!).hideCurrentSnackBar()
+            : const SizedBox();
         ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
           backgroundColor: isConnected ? Colors.green : Colors.red,
           duration: Duration(seconds: isConnected ? 3 : 6000),
-          content: Text(isConnected ? 'connected'.tr : 'no_connection'.tr, textAlign: TextAlign.center),
+          content: Text(isConnected ? 'connected'.tr : 'no_connection'.tr,
+              textAlign: TextAlign.center),
         ));
-        if(isConnected) {
+        if (isConnected) {
           _route();
         }
       }
@@ -54,7 +62,6 @@ class SplashScreenState extends State<SplashScreen> {
 
     Get.find<SplashController>().initSharedData();
     _route();
-
   }
 
   @override
@@ -69,15 +76,16 @@ class SplashScreenState extends State<SplashScreen> {
       if (isSuccess) {
         Timer(const Duration(seconds: 1), () async {
           double? minimumVersion = _getMinimumVersion();
-          bool isMaintenanceMode = Get.find<SplashController>().configModel!.maintenanceMode!;
+          bool isMaintenanceMode =
+              Get.find<SplashController>().configModel!.maintenanceMode!;
           bool needsUpdate = AppConstants.appVersion < minimumVersion!;
 
           if (needsUpdate || isMaintenanceMode) {
             Get.offNamed(RouteHelper.getUpdateRoute(needsUpdate));
-          }else{
-            if(widget.body != null) {
+          } else {
+            if (widget.body != null) {
               await _handleNotificationRouting(widget.body);
-            }else{
+            } else {
               await _handleDefaultRouting();
             }
           }
@@ -95,18 +103,29 @@ class SplashScreenState extends State<SplashScreen> {
     return 0;
   }
 
-  Future<void> _handleNotificationRouting(NotificationBodyModel? notificationBody) async {
+  Future<void> _handleNotificationRouting(
+      NotificationBodyModel? notificationBody) async {
     final notificationType = notificationBody?.notificationType;
 
     final Map<NotificationType, Function> notificationActions = {
-      NotificationType.order: () => Get.toNamed(RouteHelper.getOrderDetailsRoute(notificationBody?.orderId, fromNotification: true)),
-      NotificationType.order_request: () => Get.toNamed(RouteHelper.getMainRoute('order-request')),
-      NotificationType.block: () => Get.offAllNamed(RouteHelper.getSignInRoute()),
-      NotificationType.unblock: () => Get.offAllNamed(RouteHelper.getSignInRoute()),
+      NotificationType.order: () => Get.toNamed(
+          RouteHelper.getOrderDetailsRoute(notificationBody?.orderId,
+              fromNotification: true)),
+      NotificationType.order_request: () =>
+          Get.toNamed(RouteHelper.getMainRoute('order-request')),
+      NotificationType.block: () =>
+          Get.offAllNamed(RouteHelper.getSignInRoute()),
+      NotificationType.unblock: () =>
+          Get.offAllNamed(RouteHelper.getSignInRoute()),
       NotificationType.otp: () => null,
-      NotificationType.unassign: () => Get.to(const DashboardScreen(pageIndex: 1)),
-      NotificationType.message: () => Get.toNamed(RouteHelper.getChatRoute(notificationBody: notificationBody, conversationId: notificationBody?.conversationId, fromNotification: true)),
-      NotificationType.general: () => Get.toNamed(RouteHelper.getNotificationRoute(fromNotification: true)),
+      NotificationType.unassign: () =>
+          Get.to(const DashboardScreen(pageIndex: 1)),
+      NotificationType.message: () => Get.toNamed(RouteHelper.getChatRoute(
+          notificationBody: notificationBody,
+          conversationId: notificationBody?.conversationId,
+          fromNotification: true)),
+      NotificationType.general: () =>
+          Get.toNamed(RouteHelper.getNotificationRoute(fromNotification: true)),
     };
 
     notificationActions[notificationType]?.call();
@@ -126,14 +145,30 @@ class SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Image.asset(Images.logo, width: 200),
-            const SizedBox(height: Dimensions.paddingSizeSmall),
-            Text('suffix_name'.tr, style: robotoMedium, textAlign: TextAlign.center),
-          ]),
+      body: Container(
+        decoration:const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              AppColor.splashColorLeft,
+              AppColor.splashColorRight,
+            ],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Image.asset(Images.splashLogo, width: 150),
+              const SizedBox(height: Dimensions.paddingSizeSmall),
+              Text(
+                'suffix_name'.tr,
+                style: robotoMedium.copyWith(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ]),
+          ),
         ),
       ),
     );
