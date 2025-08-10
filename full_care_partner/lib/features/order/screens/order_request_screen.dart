@@ -55,7 +55,7 @@ class OrderRequestScreenState extends State<OrderRequestScreen> {
             padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
             physics: const AlwaysScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return OrderRequestWidget(orderModel: orderController.latestOrderList![index], index: index, onTap: widget.onTap);
+              return OrderRequestWidget(orderModel: orderController.latestOrderList![index], index: index, onTap: widget.onTap, orderController: orderController,);
             },
           ),
         ) : Center(child: Text('no_order_request_available'.tr)) : const Center(child: CircularProgressIndicator());

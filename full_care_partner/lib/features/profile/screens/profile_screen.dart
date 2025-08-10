@@ -161,10 +161,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
-              ProfileButtonWidget(icon: Icons.chat_bubble, title: 'conversation'.tr, onTap: () {
-                Get.toNamed(RouteHelper.getConversationListRoute());
-              }),
-              const SizedBox(height: Dimensions.paddingSizeSmall),
+              // ProfileButtonWidget(icon: Icons.chat_bubble, title: 'conversation'.tr, onTap: () {
+              //   Get.toNamed(RouteHelper.getConversationListRoute());
+              // }),
+              // const SizedBox(height: Dimensions.paddingSizeSmall),
 
               (profileController.profileModel != null && profileController.profileModel!.earnings == 1) ? Padding(
                 padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),

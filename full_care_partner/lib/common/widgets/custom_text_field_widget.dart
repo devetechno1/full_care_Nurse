@@ -28,6 +28,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final String? countryDialCode;
   final Function(CountryCode countryCode)? onCountryChanged;
   final bool border;
+  final String? Function(String?)? validator;
 
   const CustomTextFieldWidget({
     super.key,
@@ -53,6 +54,8 @@ class CustomTextFieldWidget extends StatefulWidget {
     this.countryDialCode,
     this.onCountryChanged,
     this.border = true,
+    this.validator,
+
   });
 
   @override
@@ -69,7 +72,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
       widget.showTitle ? Text(widget.hintText, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)) : const SizedBox(),
       SizedBox(height: widget.showTitle ? Dimensions.paddingSizeExtraSmall : 0),
 
-      TextField(
+      TextFormField(
         maxLines: widget.maxLines,
         controller: widget.controller,
         focusNode: widget.focusNode,
@@ -80,6 +83,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         textCapitalization: widget.capitalization,
         enabled: widget.isEnabled,
         autofocus: false,
+        validator: widget.validator,
         obscureText: widget.isPassword ? _obscureText : false,
         inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9+]'))] : null,
         decoration: InputDecoration(
@@ -140,7 +144,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
             onPressed: _toggle,
           ) : null,
         ),
-        onSubmitted: (text) => widget.nextFocus != null ? FocusScope.of(context).requestFocus(widget.nextFocus) : widget.onSubmit != null ? widget.onSubmit!(text) : null,
+        onFieldSubmitted: (text) => widget.nextFocus != null ? FocusScope.of(context).requestFocus(widget.nextFocus) : widget.onSubmit != null ? widget.onSubmit!(text) : null,
         onChanged: widget.onChanged as void Function(String)?,
       ),
 

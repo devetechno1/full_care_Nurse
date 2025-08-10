@@ -46,6 +46,7 @@ class _DeliveryManRegistrationScreenState
   final FocusNode _identityNumberNode = FocusNode();
   String? _countryDialCode;
   String? _countryCode;
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -158,438 +159,488 @@ class _DeliveryManRegistrationScreenState
               }
             }
 
-            return Column(children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Dimensions.paddingSizeLarge,
-                    vertical: Dimensions.paddingSizeSmall),
-                child: Column(children: [
-                  Text(
-                    'complete_registration_process_to_serve_as_delivery_man_in_this_platform'
-                        .tr,
-                    style: robotoRegular.copyWith(
-                        fontSize: Dimensions.fontSizeSmall,
-                        color: Theme.of(context).hintColor),
-                  ),
-                  const SizedBox(height: Dimensions.paddingSizeSmall),
-                  LinearProgressIndicator(
-                    backgroundColor: Theme.of(context).disabledColor,
-                    minHeight: 2,
-                    value: authController.dmStatus,
-                  ),
-                ]),
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Visibility(
-                        visible: authController.dmStatus == 0.4,
-                        child: Column(children: [
-                          Align(
-                              alignment: Alignment.center,
-                              child: Stack(clipBehavior: Clip.none, children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      Dimensions.radiusDefault),
-                                  child: authController.pickedImage != null
-                                      ? GetPlatform.isWeb
-                                          ? Image.network(
-                                              authController.pickedImage!.path,
-                                              width: 140,
-                                              height: 140,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Image.file(
-                                              File(authController
-                                                  .pickedImage!.path),
-                                              width: 140,
-                                              height: 140,
-                                              fit: BoxFit.cover,
-                                            )
-                                      : SizedBox(
-                                          width: 140,
-                                          height: 140,
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.photo_camera,
-                                                    size: 26,
-                                                    color: Theme.of(context)
-                                                        .disabledColor),
-                                                const SizedBox(
-                                                    height: Dimensions
-                                                        .paddingSizeSmall),
-                                                Text(
-                                                  'upload_profile_picture'.tr,
-                                                  style: robotoMedium.copyWith(
+            return Form(
+              key: _formKey,
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeLarge,
+                      vertical: Dimensions.paddingSizeSmall),
+                  child: Column(children: [
+                    Text(
+                      'complete_registration_process_to_serve_as_delivery_man_in_this_platform'
+                          .tr,
+                      style: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeSmall,
+                          color: Theme.of(context).hintColor),
+                    ),
+                    const SizedBox(height: Dimensions.paddingSizeSmall),
+                    LinearProgressIndicator(
+                      backgroundColor: Theme.of(context).disabledColor,
+                      minHeight: 2,
+                      value: authController.dmStatus,
+                    ),
+                  ]),
+                ),
+                Expanded(
+                    child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Visibility(
+                          visible: authController.dmStatus == 0.4,
+                          child: Column(children: [
+                            Align(
+                                alignment: Alignment.center,
+                                child: Stack(clipBehavior: Clip.none, children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radiusDefault),
+                                    child: authController.pickedImage != null
+                                        ? GetPlatform.isWeb
+                                            ? Image.network(
+                                                authController.pickedImage!.path,
+                                                width: 140,
+                                                height: 140,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.file(
+                                                File(authController
+                                                    .pickedImage!.path),
+                                                width: 140,
+                                                height: 140,
+                                                fit: BoxFit.cover,
+                                              )
+                                        : SizedBox(
+                                            width: 140,
+                                            height: 140,
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.photo_camera,
+                                                      size: 26,
                                                       color: Theme.of(context)
-                                                          .disabledColor,
-                                                      fontSize: Dimensions
-                                                          .fontSizeSmall),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ]),
-                                        ),
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  top: 0,
-                                  left: 0,
-                                  child: InkWell(
-                                    onTap: () => authController
-                                        .pickDmImageForRegistration(
-                                            true, false),
-                                    child: DottedBorder(
-                                      color: Theme.of(context).primaryColor,
-                                      strokeWidth: 1,
-                                      strokeCap: StrokeCap.butt,
-                                      dashPattern: const [5, 5],
-                                      padding: const EdgeInsets.all(0),
-                                      borderType: BorderType.RRect,
-                                      radius: const Radius.circular(
-                                          Dimensions.radiusDefault),
-                                      child: Visibility(
-                                        visible:
-                                            authController.pickedImage != null,
-                                        child: Center(
-                                          child: Container(),
+                                                          .disabledColor),
+                                                  const SizedBox(
+                                                      height: Dimensions
+                                                          .paddingSizeSmall),
+                                                  Text(
+                                                    'upload_profile_picture'.tr,
+                                                    style: robotoMedium.copyWith(
+                                                        color: Theme.of(context)
+                                                            .disabledColor,
+                                                        fontSize: Dimensions
+                                                            .fontSizeSmall),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ]),
+                                          ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    top: 0,
+                                    left: 0,
+                                    child: InkWell(
+                                      onTap: () => authController
+                                          .pickDmImageForRegistration(
+                                              true, false),
+                                      child: DottedBorder(
+                                        color: Theme.of(context).primaryColor,
+                                        strokeWidth: 1,
+                                        strokeCap: StrokeCap.butt,
+                                        dashPattern: const [5, 5],
+                                        padding: const EdgeInsets.all(0),
+                                        borderType: BorderType.RRect,
+                                        radius: const Radius.circular(
+                                            Dimensions.radiusDefault),
+                                        child: Visibility(
+                                          visible:
+                                              authController.pickedImage != null,
+                                          child: Center(
+                                            child: Container(),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                authController.pickedImage != null
-                                    ? Positioned(
-                                        bottom: -10,
-                                        right: -10,
-                                        child: InkWell(
-                                          onTap: () =>
-                                              authController.removeDmImage(),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Theme.of(context)
-                                                      .cardColor,
-                                                  width: 2),
-                                              shape: BoxShape.circle,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .error,
-                                            ),
-                                            padding: const EdgeInsets.all(
-                                                Dimensions
-                                                    .paddingSizeExtraSmall),
-                                            child: Icon(
-                                              Icons.remove,
-                                              size: 18,
-                                              color:
-                                                  Theme.of(context).cardColor,
+                                  authController.pickedImage != null
+                                      ? Positioned(
+                                          bottom: -10,
+                                          right: -10,
+                                          child: InkWell(
+                                            onTap: () =>
+                                                authController.removeDmImage(),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .cardColor,
+                                                    width: 2),
+                                                shape: BoxShape.circle,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error,
+                                              ),
+                                              padding: const EdgeInsets.all(
+                                                  Dimensions
+                                                      .paddingSizeExtraSmall),
+                                              child: Icon(
+                                                Icons.remove,
+                                                size: 18,
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                              ),
                                             ),
                                           ),
+                                        )
+                                      : const SizedBox(),
+                                ])),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraLarge),
+                            Row(children: [
+                              Expanded(
+                                  child: CustomTextFieldWidget(
+                                hintText: 'first_name'.tr,
+                                controller: _fNameController,
+                                capitalization: TextCapitalization.words,
+                                inputType: TextInputType.name,
+                                focusNode: _fNameNode,
+                                nextFocus: _lNameNode,
+                                prefixIcon: Icons.person,
+                              )),
+                              const SizedBox(width: Dimensions.paddingSizeLarge),
+                              Expanded(
+                                  child: CustomTextFieldWidget(
+                                hintText: 'last_name'.tr,
+                                controller: _lNameController,
+                                capitalization: TextCapitalization.words,
+                                inputType: TextInputType.name,
+                                focusNode: _lNameNode,
+                                nextFocus: _phoneNode,
+                                prefixIcon: Icons.person,
+                              )),
+                            ]),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraLarge),
+                            CustomTextFieldWidget(
+                              hintText: 'phone'.tr,
+                              controller: _phoneController,
+                              focusNode: _phoneNode,
+                              nextFocus: _emailNode,
+                              inputType: TextInputType.phone,
+                              isPhone: true,
+                              onCountryChanged: (CountryCode countryCode) {
+                                _countryDialCode = countryCode.dialCode;
+                              },
+                              countryDialCode: _countryCode ??
+                                  CountryCode.fromCountryCode(
+                                          Get.find<SplashController>()
+                                              .configModel!
+                                              .country!)
+                                      .code,
+                            ),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraLarge),
+                            CustomTextFieldWidget(
+                              hintText: 'email'.tr,
+                              controller: _emailController,
+                              focusNode: _emailNode,
+                              nextFocus: _passwordNode,
+                              inputType: TextInputType.emailAddress,
+                              prefixIcon: Icons.email,
+                            ),
+                            const SizedBox(
+                                height: Dimensions.paddingSizeExtraLarge),
+                            CustomTextFieldWidget(
+                              hintText: 'password'.tr,
+                              controller: _passwordController,
+                              focusNode: _passwordNode,
+                              nextFocus: _identityNumberNode,
+                              inputAction: TextInputAction.done,
+                              inputType: TextInputType.visiblePassword,
+                              isPassword: true,
+                              prefixIcon: Icons.lock,
+                              onChanged: (value) {
+                                if (value != null && value.isNotEmpty) {
+                                  if (!authController.showPassView) {
+                                    authController.showHidePass();
+                                  }
+                                  authController.validPassCheck(value);
+                                } else {
+                                  if (authController.showPassView) {
+                                    authController.showHidePass();
+                                  }
+                                }
+                              },
+                            ),
+                            authController.showPassView
+                                ? const PassViewWidget()
+                                : const SizedBox(),
+                          ]),
+                        ),
+                        Visibility(
+                          visible: authController.dmStatus != 0.4,
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Row(children: [
+                                  Expanded(
+                                      child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          Dimensions.radiusDefault),
+                                      color: Theme.of(context).cardColor,
+                                      border: Border.all(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 0.3,
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: Dimensions.paddingSizeSmall,
+                                      horizontal: Dimensions.paddingSizeSmall,
+                                    ),
+                                    child: Text(
+                                      'freelancer'.tr,
+                                     // '${authController.dmTypeList[authController.dmTypeIndex]?.tr ?? ''}',
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                  )),
+                                  const SizedBox(
+                                      width: Dimensions.paddingSizeLarge),
+                                  Expanded(
+                                      child: addressController.zoneList != null
+                                          ? Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        Dimensions.radiusDefault),
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                                border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    width: 0.3),
+                                              ),
+                                              child: CustomDropdown<int>(
+                                                onChange:
+                                                    (int? value, int index) {
+                                                  addressController
+                                                      .setZoneIndex(value);
+                                                },
+                                                dropdownButtonStyle:
+                                                    DropdownButtonStyle(
+                                                  height: 45,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                    vertical: Dimensions
+                                                        .paddingSizeExtraSmall,
+                                                    horizontal: Dimensions
+                                                        .paddingSizeExtraSmall,
+                                                  ),
+                                                  primaryColor: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge!
+                                                      .color,
+                                                ),
+                                                dropdownStyle: DropdownStyle(
+                                                  elevation: 10,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          Dimensions
+                                                              .radiusDefault),
+                                                  padding: const EdgeInsets.all(
+                                                      Dimensions
+                                                          .paddingSizeExtraSmall),
+                                                ),
+                                                items: zoneList,
+                                                child: Text(
+                                                    '${addressController.zoneList![0].name}'),
+                                              ),
+                                            )
+                                          : const Center(
+                                              child:
+                                                  CircularProgressIndicator())),
+                                ]),
+                                const SizedBox(
+                                    height: Dimensions.paddingSizeExtraLarge),
+                                authController.vehicleIds != null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radiusDefault),
+                                          color: Theme.of(context).cardColor,
+                                          border: Border.all(
+                                              color:
+                                                  Theme.of(context).primaryColor,
+                                              width: 0.3),
+                                        ),
+                                        child: CustomDropdown<int>(
+                                          onChange: (int? value, int index) {
+                                            authController.setVehicleIndex(
+                                                value, true);
+                                          },
+                                          dropdownButtonStyle:
+                                              DropdownButtonStyle(
+                                            height: 45,
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: Dimensions
+                                                  .paddingSizeExtraSmall,
+                                              horizontal: Dimensions
+                                                  .paddingSizeExtraSmall,
+                                            ),
+                                            primaryColor: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .color,
+                                          ),
+                                          dropdownStyle: DropdownStyle(
+                                            elevation: 10,
+                                            borderRadius: BorderRadius.circular(
+                                                Dimensions.radiusDefault),
+                                            padding: const EdgeInsets.all(
+                                                Dimensions.paddingSizeExtraSmall),
+                                          ),
+                                          items: vehicleList,
+                                          child: Text('select_vehicle_type'.tr),
                                         ),
                                       )
-                                    : const SizedBox(),
-                              ])),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraLarge),
-                          Row(children: [
-                            Expanded(
-                                child: CustomTextFieldWidget(
-                              hintText: 'first_name'.tr,
-                              controller: _fNameController,
-                              capitalization: TextCapitalization.words,
-                              inputType: TextInputType.name,
-                              focusNode: _fNameNode,
-                              nextFocus: _lNameNode,
-                              prefixIcon: Icons.person,
-                            )),
-                            const SizedBox(width: Dimensions.paddingSizeLarge),
-                            Expanded(
-                                child: CustomTextFieldWidget(
-                              hintText: 'last_name'.tr,
-                              controller: _lNameController,
-                              capitalization: TextCapitalization.words,
-                              inputType: TextInputType.name,
-                              focusNode: _lNameNode,
-                              nextFocus: _phoneNode,
-                              prefixIcon: Icons.person,
-                            )),
-                          ]),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraLarge),
-                          CustomTextFieldWidget(
-                            hintText: 'phone'.tr,
-                            controller: _phoneController,
-                            focusNode: _phoneNode,
-                            nextFocus: _emailNode,
-                            inputType: TextInputType.phone,
-                            isPhone: true,
-                            onCountryChanged: (CountryCode countryCode) {
-                              _countryDialCode = countryCode.dialCode;
-                            },
-                            countryDialCode: _countryCode ??
-                                CountryCode.fromCountryCode(
-                                        Get.find<SplashController>()
-                                            .configModel!
-                                            .country!)
-                                    .code,
-                          ),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraLarge),
-                          CustomTextFieldWidget(
-                            hintText: 'email'.tr,
-                            controller: _emailController,
-                            focusNode: _emailNode,
-                            nextFocus: _passwordNode,
-                            inputType: TextInputType.emailAddress,
-                            prefixIcon: Icons.email,
-                          ),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraLarge),
-                          CustomTextFieldWidget(
-                            hintText: 'password'.tr,
-                            controller: _passwordController,
-                            focusNode: _passwordNode,
-                            nextFocus: _identityNumberNode,
-                            inputAction: TextInputAction.done,
-                            inputType: TextInputType.visiblePassword,
-                            isPassword: true,
-                            prefixIcon: Icons.lock,
-                            onChanged: (value) {
-                              if (value != null && value.isNotEmpty) {
-                                if (!authController.showPassView) {
-                                  authController.showHidePass();
-                                }
-                                authController.validPassCheck(value);
-                              } else {
-                                if (authController.showPassView) {
-                                  authController.showHidePass();
-                                }
-                              }
-                            },
-                          ),
-                          authController.showPassView
-                              ? const PassViewWidget()
-                              : const SizedBox(),
-                        ]),
-                      ),
-                      Visibility(
-                        visible: authController.dmStatus != 0.4,
-                        child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(children: [
-                                Expanded(
-                                    child: Container(
+                                    : const CircularProgressIndicator(),
+                                const SizedBox(
+                                    height: Dimensions.paddingSizeExtraLarge),
+                                Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.radiusDefault),
                                     color: Theme.of(context).cardColor,
                                     border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 0.3,
+                                        color: Theme.of(context).primaryColor,
+                                        width: 0.3),
+                                  ),
+                                  child: CustomDropdown<int>(
+                                    onChange: (int? value, int index) {
+                                      authController.setIdentityTypeIndex(
+                                          authController.identityTypeList[index],
+                                          true);
+                                    },
+                                    dropdownButtonStyle: DropdownButtonStyle(
+                                      height: 45,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical:
+                                            Dimensions.paddingSizeExtraSmall,
+                                        horizontal:
+                                            Dimensions.paddingSizeExtraSmall,
+                                      ),
+                                      primaryColor: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color,
                                     ),
+                                    dropdownStyle: DropdownStyle(
+                                      elevation: 10,
+                                      borderRadius: BorderRadius.circular(
+                                          Dimensions.radiusDefault),
+                                      padding: const EdgeInsets.all(
+                                          Dimensions.paddingSizeExtraSmall),
+                                    ),
+                                    items: identityTypeList,
+                                    child: Text(
+                                        authController.identityTypeList[0].tr),
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: Dimensions.paddingSizeSmall,
-                                    horizontal: Dimensions.paddingSizeSmall,
-                                  ),
-                                  child: Text(
-                                    'freelancer'.tr,
-                                   // '${authController.dmTypeList[authController.dmTypeIndex]?.tr ?? ''}',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                )),
+                                ),
                                 const SizedBox(
-                                    width: Dimensions.paddingSizeLarge),
-                                Expanded(
-                                    child: addressController.zoneList != null
-                                        ? Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      Dimensions.radiusDefault),
-                                              color:
-                                                  Theme.of(context).cardColor,
-                                              border: Border.all(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  width: 0.3),
-                                            ),
-                                            child: CustomDropdown<int>(
-                                              onChange:
-                                                  (int? value, int index) {
-                                                addressController
-                                                    .setZoneIndex(value);
-                                              },
-                                              dropdownButtonStyle:
-                                                  DropdownButtonStyle(
-                                                height: 45,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: Dimensions
-                                                      .paddingSizeExtraSmall,
-                                                  horizontal: Dimensions
-                                                      .paddingSizeExtraSmall,
-                                                ),
-                                                primaryColor: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .color,
-                                              ),
-                                              dropdownStyle: DropdownStyle(
-                                                elevation: 10,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        Dimensions
-                                                            .radiusDefault),
-                                                padding: const EdgeInsets.all(
-                                                    Dimensions
-                                                        .paddingSizeExtraSmall),
-                                              ),
-                                              items: zoneList,
-                                              child: Text(
-                                                  '${addressController.zoneList![0].name}'),
-                                            ),
-                                          )
-                                        : const Center(
-                                            child:
-                                                CircularProgressIndicator())),
-                              ]),
-                              const SizedBox(
-                                  height: Dimensions.paddingSizeExtraLarge),
-                              authController.vehicleIds != null
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Dimensions.radiusDefault),
-                                        color: Theme.of(context).cardColor,
-                                        border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            width: 0.3),
-                                      ),
-                                      child: CustomDropdown<int>(
-                                        onChange: (int? value, int index) {
-                                          authController.setVehicleIndex(
-                                              value, true);
-                                        },
-                                        dropdownButtonStyle:
-                                            DropdownButtonStyle(
-                                          height: 45,
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: Dimensions
-                                                .paddingSizeExtraSmall,
-                                            horizontal: Dimensions
-                                                .paddingSizeExtraSmall,
-                                          ),
-                                          primaryColor: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .color,
-                                        ),
-                                        dropdownStyle: DropdownStyle(
-                                          elevation: 10,
-                                          borderRadius: BorderRadius.circular(
-                                              Dimensions.radiusDefault),
-                                          padding: const EdgeInsets.all(
-                                              Dimensions.paddingSizeExtraSmall),
-                                        ),
-                                        items: vehicleList,
-                                        child: Text('select_vehicle_type'.tr),
-                                      ),
-                                    )
-                                  : const CircularProgressIndicator(),
-                              const SizedBox(
-                                  height: Dimensions.paddingSizeExtraLarge),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      Dimensions.radiusDefault),
-                                  color: Theme.of(context).cardColor,
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor,
-                                      width: 0.3),
-                                ),
-                                child: CustomDropdown<int>(
-                                  onChange: (int? value, int index) {
-                                    authController.setIdentityTypeIndex(
-                                        authController.identityTypeList[index],
-                                        true);
+                                    height: Dimensions.paddingSizeExtraLarge),
+                                CustomTextFieldWidget(
+                                  hintText: authController.identityTypeIndex == 0
+                                      ? 'Ex: XXXXX-XXXXXXX-X'
+                                      : authController.identityTypeIndex == 1
+                                          ? 'L-XXX-XXX-XXX-XXX.'
+                                          : 'XXX-XXXXX',
+                                  controller: _identityNumberController,
+                                  focusNode: _identityNumberNode,
+                                  inputAction: TextInputAction.done,
+                                  validator: (value) {
+                                  if (authController.identityTypeIndex == 0) {
+                                  if (value == null || value.length != 9) {
+                                    return 'passport_number_must_be_9_digits'.tr;
+                                  }
+                                }else if (authController.identityTypeIndex == 1) {
+                                  if (value == null || value.length != 14) {
+                                    return 'license_number_must_be_14_digits'.tr;
+                                  }
+                                }else if (authController.identityTypeIndex == 2) {
+                                  if (value == null || value.length != 14) {
+                                    return 'id_number_must_be_14_digits'.tr;
+                                }
+                                }
+                                return null;
                                   },
-                                  dropdownButtonStyle: DropdownButtonStyle(
-                                    height: 45,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical:
-                                          Dimensions.paddingSizeExtraSmall,
-                                      horizontal:
-                                          Dimensions.paddingSizeExtraSmall,
-                                    ),
-                                    primaryColor: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .color,
-                                  ),
-                                  dropdownStyle: DropdownStyle(
-                                    elevation: 10,
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.radiusDefault),
-                                    padding: const EdgeInsets.all(
-                                        Dimensions.paddingSizeExtraSmall),
-                                  ),
-                                  items: identityTypeList,
-                                  child: Text(
-                                      authController.identityTypeList[0].tr),
                                 ),
-                              ),
-                              const SizedBox(
-                                  height: Dimensions.paddingSizeExtraLarge),
-                              CustomTextFieldWidget(
-                                hintText: authController.identityTypeIndex == 0
-                                    ? 'Ex: XXXXX-XXXXXXX-X'
-                                    : authController.identityTypeIndex == 1
-                                        ? 'L-XXX-XXX-XXX-XXX.'
-                                        : 'XXX-XXXXX',
-                                controller: _identityNumberController,
-                                focusNode: _identityNumberNode,
-                                inputAction: TextInputAction.done,
-                              ),
-                              const SizedBox(
-                                  height: Dimensions.paddingSizeExtraLarge),
-                              ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount:
-                                    authController.pickedIdentities.length + 1,
-                                itemBuilder: (context, index) {
-                                  XFile? file = index ==
-                                          authController.pickedIdentities.length
-                                      ? null
-                                      : authController.pickedIdentities[index];
-                                  if (index ==
-                                      authController.pickedIdentities.length) {
-                                    return InkWell(
-                                      onTap: () {
-                                        if (authController
-                                                .pickedIdentities.length <
-                                            6) {
-                                          authController
-                                              .pickDmImageForRegistration(
-                                                  false, false);
-                                        } else {
-                                          showCustomSnackBar(
-                                              'maximum_image_limit_is_6'.tr);
-                                        }
-                                      },
+                                const SizedBox(
+                                    height: Dimensions.paddingSizeExtraLarge),
+                                ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount:
+                                      authController.pickedIdentities.length + 1,
+                                  itemBuilder: (context, index) {
+                                    XFile? file = index ==
+                                            authController.pickedIdentities.length
+                                        ? null
+                                        : authController.pickedIdentities[index];
+                                    if (index ==
+                                        authController.pickedIdentities.length) {
+                                      return InkWell(
+                                        onTap: () {
+                                          if (authController
+                                                  .pickedIdentities.length <
+                                              6) {
+                                            authController
+                                                .pickDmImageForRegistration(
+                                                    false, false);
+                                          } else {
+                                            showCustomSnackBar(
+                                                'maximum_image_limit_is_6'.tr);
+                                          }
+                                        },
+                                        child: DottedBorder(
+                                          color: Theme.of(context).primaryColor,
+                                          strokeWidth: 1,
+                                          strokeCap: StrokeCap.butt,
+                                          dashPattern: const [5, 5],
+                                          padding: const EdgeInsets.all(5),
+                                          borderType: BorderType.RRect,
+                                          radius: const Radius.circular(
+                                              Dimensions.radiusDefault),
+                                          child: SizedBox(
+                                            height: 120,
+                                            width: double.infinity,
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.camera_alt,
+                                                      color: Theme.of(context)
+                                                          .disabledColor,
+                                                      size: 38),
+                                                  Text('upload_identity_image'.tr,
+                                                      style: robotoMedium.copyWith(
+                                                          color: Theme.of(context)
+                                                              .disabledColor)),
+                                                ]),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: Dimensions.paddingSizeSmall),
                                       child: DottedBorder(
                                         color: Theme.of(context).primaryColor,
                                         strokeWidth: 1,
@@ -599,163 +650,132 @@ class _DeliveryManRegistrationScreenState
                                         borderType: BorderType.RRect,
                                         radius: const Radius.circular(
                                             Dimensions.radiusDefault),
-                                        child: SizedBox(
-                                          height: 120,
-                                          width: double.infinity,
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(Icons.camera_alt,
-                                                    color: Theme.of(context)
-                                                        .disabledColor,
-                                                    size: 38),
-                                                Text('upload_identity_image'.tr,
-                                                    style: robotoMedium.copyWith(
-                                                        color: Theme.of(context)
-                                                            .disabledColor)),
-                                              ]),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: Dimensions.paddingSizeSmall),
-                                    child: DottedBorder(
-                                      color: Theme.of(context).primaryColor,
-                                      strokeWidth: 1,
-                                      strokeCap: StrokeCap.butt,
-                                      dashPattern: const [5, 5],
-                                      padding: const EdgeInsets.all(5),
-                                      borderType: BorderType.RRect,
-                                      radius: const Radius.circular(
-                                          Dimensions.radiusDefault),
-                                      child: Stack(children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              Dimensions.radiusSmall),
-                                          child: GetPlatform.isWeb
-                                              ? Image.network(
-                                                  file!.path,
-                                                  width: double.infinity,
-                                                  height: 120,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Image.file(
-                                                  File(file!.path),
-                                                  width: double.infinity,
-                                                  height: 120,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: InkWell(
-                                            onTap: () => authController
-                                                .removeIdentityImage(index),
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(
-                                                  Dimensions.paddingSizeSmall),
-                                              child: Icon(Icons.delete_forever,
-                                                  color: Colors.red),
+                                        child: Stack(children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                Dimensions.radiusSmall),
+                                            child: GetPlatform.isWeb
+                                                ? Image.network(
+                                                    file!.path,
+                                                    width: double.infinity,
+                                                    height: 120,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Image.file(
+                                                    File(file!.path),
+                                                    width: double.infinity,
+                                                    height: 120,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                          ),
+                                          Positioned(
+                                            right: 0,
+                                            top: 0,
+                                            child: InkWell(
+                                              onTap: () => authController
+                                                  .removeIdentityImage(index),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(
+                                                    Dimensions.paddingSizeSmall),
+                                                child: Icon(Icons.delete_forever,
+                                                    color: Colors.red),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ]),
-                                    ),
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                  height: Dimensions.paddingSizeSmall),
-                              ConditionCheckBoxWidget(
-                                  authController: authController,
-                                  fromSignUp: true),
-                            ]),
-                      ),
-                    ]),
-              )),
-              SafeArea(
-                child: !authController.isLoading
-                    ? CustomButtonWidget(
-                        buttonText: authController.dmStatus == 0.4
-                            ? 'next'.tr
-                            : 'submit'.tr,
-                        margin:
-                            const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                        height: 50,
-                        onPressed: !authController.acceptTerms
-                            ? null
-                            : () async {
-                                if (authController.dmStatus == 0.4) {
-                                  String fName = _fNameController.text.trim();
-                                  String lName = _lNameController.text.trim();
-                                  String email = _emailController.text.trim();
-                                  String phone = _phoneController.text.trim();
-                                  String password =
-                                      _passwordController.text.trim();
-                                  String numberWithCountryCode =
-                                      _countryDialCode! + phone;
-                                  bool isValid =
-                                      GetPlatform.isAndroid ? false : true;
-
-                                  try {
-                                    PhoneNumber phoneNumber = PhoneNumber.parse(
-                                        numberWithCountryCode);
-                                    numberWithCountryCode =
-                                        phoneNumber.international;
-                                    isValid = phoneNumber.isValid();
-                                  } catch (e) {
-                                    debugPrint(
-                                        'Number is not valid ${e.toString()}');
-                                  }
-
-                                  if (fName.isEmpty) {
-                                    showCustomSnackBar(
-                                        'enter_delivery_man_first_name'.tr);
-                                  } else if (lName.isEmpty) {
-                                    showCustomSnackBar(
-                                        'enter_delivery_man_last_name'.tr);
-                                  } else if (authController.pickedImage ==
-                                      null) {
-                                    showCustomSnackBar(
-                                        'pick_delivery_man_profile_image'.tr);
-                                  } else if (email.isEmpty) {
-                                    showCustomSnackBar(
-                                        'enter_delivery_man_email_address'.tr);
-                                  } else if (!GetUtils.isEmail(email)) {
-                                    showCustomSnackBar(
-                                        'enter_a_valid_email_address'.tr);
-                                  } else if (phone.isEmpty) {
-                                    showCustomSnackBar(
-                                        'enter_delivery_man_phone_number'.tr);
-                                  } else if (!isValid) {
-                                    showCustomSnackBar(
-                                        'enter_a_valid_phone_number'.tr);
-                                  } else if (password.isEmpty) {
-                                    showCustomSnackBar(
-                                        'enter_password_for_delivery_man'.tr);
-                                  } else if (!authController.spatialCheck ||
-                                      !authController.lowercaseCheck ||
-                                      !authController.uppercaseCheck ||
-                                      !authController.numberCheck ||
-                                      !authController.lengthCheck) {
-                                    showCustomSnackBar(
-                                        'provide_valid_password'.tr);
+                                        ]),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(
+                                    height: Dimensions.paddingSizeSmall),
+                                ConditionCheckBoxWidget(
+                                    authController: authController,
+                                    fromSignUp: true),
+                              ]),
+                        ),
+                      ]),
+                )),
+                SafeArea(
+                  child: !authController.isLoading
+                      ? CustomButtonWidget(
+                          buttonText: authController.dmStatus == 0.4
+                              ? 'next'.tr
+                              : 'submit'.tr,
+                          margin:
+                              const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                          height: 50,
+                          onPressed: !authController.acceptTerms
+                              ? null
+                              : () async {
+                                  if (authController.dmStatus == 0.4) {
+                                    String fName = _fNameController.text.trim();
+                                    String lName = _lNameController.text.trim();
+                                    String email = _emailController.text.trim();
+                                    String phone = _phoneController.text.trim();
+                                    String password =
+                                        _passwordController.text.trim();
+                                    String numberWithCountryCode =
+                                        _countryDialCode! + phone;
+                                    bool isValid =
+                                        GetPlatform.isAndroid ? false : true;
+              
+                                    try {
+                                      PhoneNumber phoneNumber = PhoneNumber.parse(
+                                          numberWithCountryCode);
+                                      numberWithCountryCode =
+                                          phoneNumber.international;
+                                      isValid = phoneNumber.isValid();
+                                    } catch (e) {
+                                      debugPrint(
+                                          'Number is not valid ${e.toString()}');
+                                    }
+              
+                                    if (fName.isEmpty) {
+                                      showCustomSnackBar(
+                                          'enter_delivery_man_first_name'.tr);
+                                    } else if (lName.isEmpty) {
+                                      showCustomSnackBar(
+                                          'enter_delivery_man_last_name'.tr);
+                                    } else if (authController.pickedImage ==
+                                        null) {
+                                      showCustomSnackBar(
+                                          'pick_delivery_man_profile_image'.tr);
+                                    } else if (email.isEmpty) {
+                                      showCustomSnackBar(
+                                          'enter_delivery_man_email_address'.tr);
+                                    } else if (!GetUtils.isEmail(email)) {
+                                      showCustomSnackBar(
+                                          'enter_a_valid_email_address'.tr);
+                                    } else if (phone.isEmpty) {
+                                      showCustomSnackBar(
+                                          'enter_delivery_man_phone_number'.tr);
+                                    } else if (!isValid) {
+                                      showCustomSnackBar(
+                                          'enter_a_valid_phone_number'.tr);
+                                    } else if (password.isEmpty) {
+                                      showCustomSnackBar(
+                                          'enter_password_for_delivery_man'.tr);
+                                    } else if (!authController.spatialCheck ||
+                                        !authController.lowercaseCheck ||
+                                        !authController.uppercaseCheck ||
+                                        !authController.numberCheck ||
+                                        !authController.lengthCheck) {
+                                      showCustomSnackBar(
+                                          'provide_valid_password'.tr);
+                                    } else {
+                                      authController.dmStatusChange(0.8);
+                                    }
                                   } else {
-                                    authController.dmStatusChange(0.8);
+                                    _addDeliveryMan(
+                                        authController, addressController);
                                   }
-                                } else {
-                                  _addDeliveryMan(
-                                      authController, addressController);
-                                }
-                              },
-                      )
-                    : const Center(child: CircularProgressIndicator()),
-              ),
-            ]);
+                                },
+                        )
+                      : const Center(child: CircularProgressIndicator()),
+                ),
+              ]),
+            );
           });
         }),
       ),
@@ -784,7 +804,14 @@ class _DeliveryManRegistrationScreenState
       showCustomSnackBar('invalid_phone_number'.tr);
     } else if (authController.vehicleIndex! - 1 == -1) {
       showCustomSnackBar('please_select_vehicle_for_the_deliveryman'.tr);
-    } else if (authController.pickedIdentities.isEmpty) {
+    } else if (authController.identityTypeIndex == 0 && identityNumber.length != 9) {
+     showCustomSnackBar('passport_number_must_be_9_digits'.tr);
+    }else if (authController.identityTypeIndex == 1 && identityNumber.length != 14) {
+  showCustomSnackBar('license_number_must_be_14_digits'.tr);
+} else if (authController.identityTypeIndex == 2 && identityNumber.length != 14) {
+    showCustomSnackBar('id_number_must_be_14_digits'.tr);
+}
+    else if (authController.pickedIdentities.isEmpty) {
       showCustomSnackBar('please_upload_identity_image'.tr);
     } else {
       authController.registerDeliveryMan(DeliveryManBodyModel(
