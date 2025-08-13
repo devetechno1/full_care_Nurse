@@ -34,6 +34,8 @@ class ProfileModel {
   double? totalWithdrawn;
   bool? showPayNowButton;
 
+  bool get isSelfDelivery => type != 'zone_wise';
+
   ProfileModel({
     this.id,
     this.fName,
