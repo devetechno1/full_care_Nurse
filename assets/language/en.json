@@ -1,5 +1,6 @@
 {
-  "loading":"Loading...",
+  "no_reviews_found": "No reviews found.",
+  "loading": "Loading...",
   "delivery_reviews": "Partner Reviews",
   "anonymous_user": "Anonymous",
   "delivery_id_not_found": "Partner ID not found",

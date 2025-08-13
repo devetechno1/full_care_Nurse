@@ -40,6 +40,7 @@ class OrderRequestWidget extends StatelessWidget {
         Get.toNamed(
           RouteHelper.getOrderDetailsRoute(orderModel.id),
           arguments: OrderDetailsScreen(
+            isAcceptedOrder: false,
             orderId: orderModel.id, isRunningOrder: true, orderIndex: orderController.currentOrderList!.length-1,
           ),
         );

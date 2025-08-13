@@ -23,15 +23,15 @@ class DateConverterHelper {
   }
 
   static DateTime dateTimeStringToDate(String dateTime) {
-    return DateFormat('yyyy-MM-dd HH:mm:ss', _locale).parse(dateTime);
+    return DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateTime);
   }
 
   static DateTime convertStringToDatetime(String dateTime) {
-    return DateFormat("yyyy-MM-ddTHH:mm:ss.SSS", _locale).parse(dateTime);
+    return DateFormat("yyyy-MM-ddTHH:mm:ss.SSS").parse(dateTime);
   }
 
   static DateTime isoStringToLocalDate(String dateTime) {
-    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS', _locale).parse(dateTime);
+    return DateFormat('yyyy-MM-ddTHH:mm:ss.SSS').parse(dateTime);
   }
 
   static String isoStringToLocalTimeOnly(String dateTime) {

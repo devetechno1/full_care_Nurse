@@ -37,6 +37,8 @@ class _DeliveryReviewsScreenState extends State<DeliveryReviewsScreen> {
       body: GetBuilder<DeliveryReviewController>(builder: (controller) {
         if (controller.reviews == null) {
           return const Center(child: CircularProgressIndicator());
+        }else if(controller.reviews!.isEmpty){
+          return Center(child: Text('no_reviews_found'.tr));
         }
 
         return RefreshIndicator(

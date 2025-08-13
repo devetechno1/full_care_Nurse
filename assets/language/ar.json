@@ -1,5 +1,6 @@
 {
-  "loading":"تحميل...",
+  "no_reviews_found": "لم يتم العثور على تقييمات.",
+  "loading": "تحميل...",
   "delivery_reviews": "تقييمات الموظف",
   "anonymous_user": "مجهول",
   "delivery_id_not_found": "لم يتم العثور على معرف الموظف",
