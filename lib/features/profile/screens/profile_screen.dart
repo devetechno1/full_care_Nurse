@@ -21,6 +21,8 @@ import 'package:sixam_mart_delivery/features/profile/widgets/profile_card_widget
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../common/widgets/custom_snackbar_widget.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -161,10 +163,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
+              ProfileButtonWidget(
+                icon: Icons.rate_review,
+                title: 'delivery_reviews'.tr,
+                onTap: () {
+                  final int? id = profileController.profileModel?.id;
+                  if (id != null) {
+                    Get.toNamed(RouteHelper.getDeliveryReviewsRoute(id));
+                  } else {
+                    showCustomSnackBar('delivery_id_not_found'.tr);
+                  }
+                },
+              ),
+
+              const SizedBox(height: Dimensions.paddingSizeSmall),
+
               // ProfileButtonWidget(icon: Icons.chat_bubble, title: 'conversation'.tr, onTap: () {
               //   Get.toNamed(RouteHelper.getConversationListRoute());
               // }),
               // const SizedBox(height: Dimensions.paddingSizeSmall),
+              
 
               (profileController.profileModel != null && profileController.profileModel!.earnings == 1) ? Padding(
                 padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),

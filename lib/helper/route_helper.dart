@@ -27,6 +27,8 @@ import 'package:sixam_mart_delivery/features/splash/screens/splash_screen.dart';
 import 'package:sixam_mart_delivery/features/update/screens/update_screen.dart';
 import 'package:get/get.dart';
 
+import '../features/review/screens/delivery_reviews_screen.dart';
+
 class RouteHelper {
   static const String initial = '/';
   static const String splash = '/splash';
@@ -54,6 +56,7 @@ class RouteHelper {
   static const String transactionHistory = '/transaction-history';
   static const String cashInHand = '/cash-in-hand';
   static const String walletProvidedEarning = '/wallet-provided-earning';
+  static const String deliveryReviews = '/delivery-reviews';
 
   static String getInitialRoute({bool? fromOrderDetails}) => '$initial?from_order_details=${fromOrderDetails.toString()}';
   static String getSplashRoute(NotificationBodyModel? body) {
@@ -108,6 +111,8 @@ class RouteHelper {
   static String getTransactionHistoryRoute() => transactionHistory;
   static String getCashInHandRoute() => cashInHand;
   static String getWalletProvidedEarningRoute() => walletProvidedEarning;
+  static String getDeliveryReviewsRoute(int deliveryId) => '$deliveryReviews?deliveryId=$deliveryId';
+
 
 
   static List<GetPage> routes = [
@@ -178,5 +183,6 @@ class RouteHelper {
     GetPage(name: transactionHistory, page: () => const TransactionHistoryScreen()),
     GetPage(name: cashInHand, page: () => const CashInHandScreen()),
     GetPage(name: walletProvidedEarning, page: () => const WalletProvidedHistoryScreen()),
+    GetPage(name: deliveryReviews, page: () => const DeliveryReviewsScreen()),
   ];
 }

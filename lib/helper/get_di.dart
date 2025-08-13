@@ -56,6 +56,11 @@ import 'package:sixam_mart_delivery/features/profile/domain/repositories/profile
 import 'package:sixam_mart_delivery/features/profile/domain/repositories/profile_repository_interface.dart';
 import 'package:sixam_mart_delivery/features/profile/domain/services/profile_service.dart';
 import 'package:sixam_mart_delivery/features/profile/domain/services/profile_service_interface.dart';
+import 'package:sixam_mart_delivery/features/review/controllers/delivery_review_controller.dart';
+import 'package:sixam_mart_delivery/features/review/domain/repositories/delivery_review_repository.dart';
+import 'package:sixam_mart_delivery/features/review/domain/repositories/delivery_review_repository_interface.dart';
+import 'package:sixam_mart_delivery/features/review/domain/services/delivery_review_service.dart';
+import 'package:sixam_mart_delivery/features/review/domain/services/delivery_review_service_interface.dart';
 import 'package:sixam_mart_delivery/features/splash/controllers/splash_controller.dart';
 import 'package:sixam_mart_delivery/features/splash/domain/repositories/splash_repository.dart';
 import 'package:sixam_mart_delivery/features/splash/domain/repositories/splash_repository_interface.dart';
@@ -196,6 +201,19 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => AddressController(addressServiceInterface: Get.find()));
   Get.lazyPut(() => AuthController(authServiceInterface: Get.find()));
   Get.lazyPut(() => OrderController(orderServiceInterface: Get.find()));
+
+  final DeliveryReviewRepositoryInterface deliveryReviewRepositoryInterface =
+    DeliveryReviewRepository(apiClient: Get.find(), sharedPreferences: Get.find());
+  Get.lazyPut<DeliveryReviewRepositoryInterface>(() => deliveryReviewRepositoryInterface);
+
+  final DeliveryReviewServiceInterface deliveryReviewServiceInterface =
+      DeliveryReviewService(deliveryReviewRepositoryInterface: Get.find());
+  Get.lazyPut<DeliveryReviewServiceInterface>(() => deliveryReviewServiceInterface);
+
+  Get.lazyPut<DeliveryReviewController>(() => DeliveryReviewController(
+    deliveryReviewServiceInterface: Get.find(),
+  ));
+
 
   /// Retrieving localized data
   Map<String, Map<String, String>> languages = {};
