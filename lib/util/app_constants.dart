@@ -19,6 +19,7 @@ class AppConstants {
   static const String latestOrdersUri = '/api/v1/delivery-man/latest-orders?token=';
   static const String recordLocationUri = '/api/v1/delivery-man/record-location-data';
   static const String profileUri = '/api/v1/delivery-man/profile?token=';
+  static const String dmAccountsUri = '/api/v1/delivery-man/accounts';
   static const String updateOrderStatusUri = '/api/v1/delivery-man/update-order-status';
   static const String updatePaymentStatusUri = '/api/v1/delivery-man/update-payment-status';
   static const String orderDetailsUri = '/api/v1/delivery-man/order-details?token=';

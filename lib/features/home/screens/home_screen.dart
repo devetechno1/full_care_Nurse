@@ -12,7 +12,6 @@ import 'package:sixam_mart_delivery/util/images.dart';
 import 'package:sixam_mart_delivery/util/styles.dart';
 import 'package:sixam_mart_delivery/common/widgets/confirmation_dialog_widget.dart';
 import 'package:sixam_mart_delivery/common/widgets/custom_alert_dialog_widget.dart';
-import 'package:sixam_mart_delivery/common/widgets/custom_button_widget.dart';
 import 'package:sixam_mart_delivery/common/widgets/custom_snackbar_widget.dart';
 import 'package:sixam_mart_delivery/common/widgets/order_shimmer_widget.dart';
 import 'package:sixam_mart_delivery/common/widgets/order_widget.dart';
@@ -24,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -180,31 +180,34 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           GetBuilder<ProfileController>(builder: (profileController) {
             return GetBuilder<OrderController>(builder: (orderController) {
-              return (profileController.profileModel != null && orderController.currentOrderList != null) ? FlutterSwitch(
-                width: 75, height: 30, valueFontSize: Dimensions.fontSizeExtraSmall, showOnOff: true,
-                activeText: 'online'.tr, inactiveText: 'offline'.tr, activeColor: Theme.of(context).primaryColor,
-                value: profileController.profileModel!.active == 1, onToggle: (bool isActive) async {
-                  if(!isActive && orderController.currentOrderList!.isNotEmpty) {
-                    showCustomSnackBar('you_can_not_go_offline_now'.tr);
-                  }else {
-                    if(!isActive) {
-                      Get.dialog(ConfirmationDialogWidget(
-                        icon: Images.warning, description: 'are_you_sure_to_offline'.tr,
-                        onYesPressed: () {
-                          Get.back();
-                          profileController.updateActiveStatus();
-                        },
-                      ));
+              return (profileController.profileModel != null && orderController.currentOrderList != null) ? Directionality(
+                textDirection: TextDirection.ltr,
+                child: FlutterSwitch(
+                  width: 78, height: 30, valueFontSize: Dimensions.fontSizeExtraSmall, showOnOff: true,
+                  activeText: 'online'.tr, inactiveText: 'offline'.tr, activeColor: Theme.of(context).primaryColor,
+                  value: profileController.profileModel!.active == 1, onToggle: (bool isActive) async {
+                    if(!isActive && orderController.currentOrderList!.isNotEmpty) {
+                      showCustomSnackBar('you_can_not_go_offline_now'.tr);
                     }else {
-                      LocationPermission permission = await Geolocator.checkPermission();
-                      if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever || (GetPlatform.isIOS ? false : permission == LocationPermission.whileInUse)) {
-                        _checkPermission(() => profileController.updateActiveStatus());
+                      if(!isActive) {
+                        Get.dialog(ConfirmationDialogWidget(
+                          icon: Images.warning, description: 'are_you_sure_to_offline'.tr,
+                          onYesPressed: () {
+                            Get.back();
+                            profileController.updateActiveStatus();
+                          },
+                        ));
                       }else {
-                        profileController.updateActiveStatus();
+                        LocationPermission permission = await Geolocator.checkPermission();
+                        if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever || (GetPlatform.isIOS ? false : permission == LocationPermission.whileInUse)) {
+                          _checkPermission(() => profileController.updateActiveStatus());
+                        }else {
+                          profileController.updateActiveStatus();
+                        }
                       }
                     }
-                  }
-                },
+                  },
+                ),
               ) : const SizedBox();
             });
           }),
@@ -234,6 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           Expanded(
             child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
               child: GetBuilder<ProfileController>(builder: (profileController) {
 
@@ -263,59 +267,55 @@ class _HomeScreenState extends State<HomeScreen> {
                     TitleWidget(title: 'earnings'.tr),
                     const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
-                    Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      child: Column(children: [
-
-                        Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-
-                          const SizedBox(width: Dimensions.paddingSizeSmall),
-                          Image.asset(Images.wallet, width: 60, height: 60),
-                          const SizedBox(width: Dimensions.paddingSizeLarge),
-
-                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                            Text(
-                              'balance'.tr,
-                              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).cardColor),
-                            ),
-                            const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                            profileController.profileModel != null ? Text(
-                              PriceConverterHelper.convertPrice(profileController.profileModel!.balance),
-                              style: robotoBold.copyWith(fontSize: 24, color: Theme.of(context).cardColor),
-                              maxLines: 1, overflow: TextOverflow.ellipsis,
-                            ) : Container(height: 30, width: 60, color: Colors.white),
-
+                    InkWell(
+                      onTap: () => Get.toNamed(RouteHelper.getDmAccountsRoute()),
+                      child: Container(
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        child: Column(children: [
+                      
+                          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      
+                            const SizedBox(width: Dimensions.paddingSizeSmall),
+                            Image.asset(Images.wallet, width: 60, height: 60),
+                            const SizedBox(width: Dimensions.paddingSizeLarge),
+                      
+                            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      
+                              Text(
+                                'balance'.tr,
+                                style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).cardColor),
+                              ),
+                              const SizedBox(height: Dimensions.paddingSizeSmall),
+                      
+                              profileController.profileModel != null ? Text(
+                                PriceConverterHelper.convertPrice(profileController.profileModel!.balance, asFixed: 2),
+                                style: robotoBold.copyWith(fontSize: 24, color: Theme.of(context).cardColor),
+                                maxLines: 1, overflow: TextOverflow.ellipsis,
+                              ) : Container(height: 30, width: 60, color: Colors.white),
+                      
+                            ]),
                           ]),
+                          const SizedBox(height: 30),
+                          Row(children: [
+                            EarningWidget(
+                              title: 'deferred_profits'.tr,
+                              amount: profileController.profileModel?.debtValue,
+                            ),
+                            Container(height: 30, width: 1, color: Theme.of(context).cardColor),
+                      
+                            EarningWidget(
+                              title: 'realized_profits'.tr,
+                              amount: profileController.profileModel?.cashInHands,
+                            ),
+                      
+                          ]),
+                      
                         ]),
-                        const SizedBox(height: 30),
-                        Row(children: [
-
-                          EarningWidget(
-                            title: 'today'.tr,
-                            amount: profileController.profileModel?.todaysEarning,
-                          ),
-                          Container(height: 30, width: 1, color: Theme.of(context).cardColor),
-
-                          EarningWidget(
-                            title: 'this_week'.tr,
-                            amount: profileController.profileModel?.thisWeekEarning,
-                          ),
-                          Container(height: 30, width: 1, color: Theme.of(context).cardColor),
-
-                          EarningWidget(
-                            title: 'this_month'.tr,
-                            amount: profileController.profileModel?.thisMonthEarning,
-                          ),
-
-                        ]),
-
-                      ]),
+                      ),
                     ),
                     const SizedBox(height: Dimensions.paddingSizeDefault),
                   ]) : const SizedBox(),
@@ -345,38 +345,38 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: Dimensions.paddingSizeSmall),
 
-                  profileController.profileModel != null ? Container(
-                    height: 120, width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                      color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
-                      border: Border.all(width: 2, color: Theme.of(context).primaryColor.withValues(alpha: 0.1)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: profileController.profileModel!.cashInHands! > 0 && profileController.profileModel!.earnings == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-                      children: [
+                  // profileController.profileModel != null ? Container(
+                  //   height: 120, width: MediaQuery.of(context).size.width,
+                  //   padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                  //     color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
+                  //     border: Border.all(width: 2, color: Theme.of(context).primaryColor.withValues(alpha: 0.1)),
+                  //   ),
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     crossAxisAlignment: profileController.profileModel!.cashInHands! > 0 && profileController.profileModel!.earnings == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                  //     children: [
 
-                        Row(mainAxisAlignment: profileController.profileModel!.cashInHands! > 0 && profileController.profileModel!.earnings == 1 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center, children: [
+                  //       Row(mainAxisAlignment: profileController.profileModel!.cashInHands! > 0 && profileController.profileModel!.earnings == 1 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center, children: [
 
-                          Text(PriceConverterHelper.convertPrice(profileController.profileModel!.cashInHands), style: robotoBold.copyWith(fontSize: 30)),
-                          const SizedBox(width: Dimensions.paddingSizeSmall),
+                  //         Text(PriceConverterHelper.convertPrice(profileController.profileModel!.cashInHands), style: robotoBold.copyWith(fontSize: 30)),
+                  //         const SizedBox(width: Dimensions.paddingSizeSmall),
 
-                          (profileController.profileModel!.cashInHands! > 0 && profileController.profileModel!.earnings == 1) ? CustomButtonWidget(
-                            width: 110, height: 40,
-                            buttonText: 'view_details'.tr,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            onPressed: () => Get.toNamed(RouteHelper.getCashInHandRoute()),
-                          ) : const SizedBox(),
+                  //         // (profileController.profileModel!.cashInHands! > 0 && profileController.profileModel!.earnings == 1) ? CustomButtonWidget(
+                  //         //   width: 110, height: 40,
+                  //         //   buttonText: 'view_details'.tr,
+                  //         //   backgroundColor: Theme.of(context).primaryColor,
+                  //         //   onPressed: () => Get.toNamed(RouteHelper.getCashInHandRoute()),
+                  //         // ) : const SizedBox(),
 
-                        ]),
+                  //       ]),
 
-                        Text('cash_in_your_hand'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+                  //       Text('realized_profits'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
 
-                      ],
-                    ),
-                  ) : const CashInHandCardShimmer(),
+                  //     ],
+                  //   ),
+                  // ) : const CashInHandCardShimmer(),
 
                 ]);
               }),

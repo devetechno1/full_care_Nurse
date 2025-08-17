@@ -21,6 +21,7 @@ class ProfileModel {
   int? earnings;
   String? type;
   double? balance;
+  double? debtValue;
   double? todaysEarning;
   double? thisWeekEarning;
   double? thisMonthEarning;
@@ -61,6 +62,7 @@ class ProfileModel {
     this.earnings,
     this.type,
     this.balance,
+    this.debtValue,
     this.todaysEarning,
     this.thisWeekEarning,
     this.thisMonthEarning,
@@ -95,7 +97,8 @@ class ProfileModel {
     cashInHands = json['cash_in_hands']?.toDouble();
     earnings = json['earning'];
     type = json['type'];
-    balance = json['balance']?.toDouble();
+    balance = double.tryParse("${json['dm_wallets']?['wallet_value']}");
+    debtValue = double.tryParse("${json['dm_wallets']?['debt_value']}");
     todaysEarning = json['todays_earning']?.toDouble();
     thisWeekEarning = json['this_week_earning']?.toDouble();
     thisMonthEarning = json['this_month_earning']?.toDouble();
@@ -132,7 +135,10 @@ class ProfileModel {
     data['this_week_order_count'] = thisWeekOrderCount;
     data['cash_in_hands'] = cashInHands;
     data['earning'] = earnings;
-    data['balance'] = balance;
+    data['dm_wallets'] = {
+      "wallet_value": balance,
+      "debt_value": debtValue,
+    };
     data['type'] = type;
     data['todays_earning'] = todaysEarning;
     data['this_week_earning'] = thisWeekEarning;

@@ -99,7 +99,7 @@ class OrderRepository implements OrderRepositoryInterface {
     if (response.statusCode == 200) {
       responseModel = ResponseModel(true, response.body['message']);
     }else {
-      responseModel = ResponseModel(false, response.statusText);
+      responseModel = ResponseModel(false, response.body['message'] ?? response.statusText);
     }
     return responseModel;
   }

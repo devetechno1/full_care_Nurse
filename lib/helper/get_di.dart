@@ -72,6 +72,12 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
+import '../features/dm_accounts/controllers/dm_accounts_controller.dart';
+import '../features/dm_accounts/domain/repositories/dm_accounts_repository.dart';
+import '../features/dm_accounts/domain/repositories/dm_accounts_repository_interface.dart';
+import '../features/dm_accounts/domain/services/dm_accounts_service.dart';
+import '../features/dm_accounts/domain/services/dm_accounts_service_interface.dart';
+
 Future<Map<String, Map<String, String>>> init() async {
 
   /// Core
@@ -136,6 +142,13 @@ Future<Map<String, Map<String, String>>> init() async {
   OrderRepositoryInterface orderRepositoryInterface = OrderRepository(apiClient: Get.find(), sharedPreferences: Get.find());
   Get.lazyPut(() => orderRepositoryInterface);
 
+  DmAccountsRepositoryInterface dmAccountsRepositoryInterface = DmAccountsRepository(apiClient: Get.find(), sharedPreferences: Get.find());
+  Get.lazyPut<DmAccountsRepositoryInterface>(() => dmAccountsRepositoryInterface);
+
+
+
+
+
   /// Service Interface
   HtmlServiceInterface htmlServiceInterface = HtmlService(htmlRepositoryInterface: Get.find());
   Get.lazyPut(() => htmlServiceInterface);
@@ -173,6 +186,10 @@ Future<Map<String, Map<String, String>>> init() async {
   OrderServiceInterface orderServiceInterface = OrderService(orderRepositoryInterface: Get.find());
   Get.lazyPut(() => orderServiceInterface);
 
+  DmAccountsServiceInterface dmAccountsServiceInterface = DmAccountsService(repo: Get.find());
+  Get.lazyPut<DmAccountsServiceInterface>(() => dmAccountsServiceInterface);
+
+
   /// Service
   Get.lazyPut(() => HtmlService(htmlRepositoryInterface: Get.find()));
   Get.lazyPut(() => DisbursementService(disbursementRepositoryInterface: Get.find()));
@@ -201,6 +218,9 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => AddressController(addressServiceInterface: Get.find()));
   Get.lazyPut(() => AuthController(authServiceInterface: Get.find()));
   Get.lazyPut(() => OrderController(orderServiceInterface: Get.find()));
+  Get.lazyPut(() => DmAccountsController(service: Get.find()));
+
+
 
   final DeliveryReviewRepositoryInterface deliveryReviewRepositoryInterface =
     DeliveryReviewRepository(apiClient: Get.find(), sharedPreferences: Get.find());

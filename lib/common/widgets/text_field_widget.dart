@@ -22,6 +22,7 @@ class TextFieldWidget extends StatefulWidget {
   final String? titleName;
   final bool title;
   final bool isRequired;
+  final bool readOnly;
 
   const TextFieldWidget({
     super.key,
@@ -42,6 +43,7 @@ class TextFieldWidget extends StatefulWidget {
     this.titleName,
     this.title = true,
     this.isRequired = false,
+    this.readOnly = false,
   });
 
   @override
@@ -83,6 +85,7 @@ class TextFieldWidgetState extends State<TextFieldWidget> {
           keyboardType: widget.inputType,
           cursorColor: Theme.of(context).primaryColor,
           textCapitalization: widget.capitalization,
+          readOnly: widget.readOnly,
           enabled: widget.isEnabled,
           autofocus: false,
           obscureText: widget.isPassword ? _obscureText : false,

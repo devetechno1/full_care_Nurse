@@ -184,12 +184,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // const SizedBox(height: Dimensions.paddingSizeSmall),
               
 
-              (profileController.profileModel != null && profileController.profileModel!.earnings == 1) ? Padding(
-                padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
-                child: ProfileButtonWidget(icon: Icons.account_balance, title: 'my_account'.tr, onTap: () {
-                  Get.toNamed(RouteHelper.getCashInHandRoute());
-                }),
-              ) : const SizedBox(),
+              // (profileController.profileModel != null && profileController.profileModel!.earnings == 1) ? Padding(
+              //   padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+              //   child: ProfileButtonWidget(icon: Icons.account_balance, title: 'my_account'.tr, onTap: () {
+              //     Get.toNamed(RouteHelper.getCashInHandRoute());
+              //   }),
+              // ) : const SizedBox(),
 
               if(Get.find<SplashController>().configModel!.disbursementType == 'automated' && profileController.profileModel!.type != 'store_wise' && profileController.profileModel!.earnings != 0)
                 Column(children: [

@@ -27,6 +27,7 @@ import 'package:sixam_mart_delivery/features/splash/screens/splash_screen.dart';
 import 'package:sixam_mart_delivery/features/update/screens/update_screen.dart';
 import 'package:get/get.dart';
 
+import '../features/dm_accounts/screens/dm_accounts_screen.dart';
 import '../features/review/screens/delivery_reviews_screen.dart';
 
 class RouteHelper {
@@ -57,6 +58,7 @@ class RouteHelper {
   static const String cashInHand = '/cash-in-hand';
   static const String walletProvidedEarning = '/wallet-provided-earning';
   static const String deliveryReviews = '/delivery-reviews';
+  static const String dmAccounts = '/dm-accounts';
 
   static String getInitialRoute({bool? fromOrderDetails}) => '$initial?from_order_details=${fromOrderDetails.toString()}';
   static String getSplashRoute(NotificationBodyModel? body) {
@@ -112,6 +114,29 @@ class RouteHelper {
   static String getCashInHandRoute() => cashInHand;
   static String getWalletProvidedEarningRoute() => walletProvidedEarning;
   static String getDeliveryReviewsRoute(int deliveryId) => '$deliveryReviews?deliveryId=$deliveryId';
+  static String getDmAccountsRoute({
+    String? inOut,
+    String? target,
+    String? payMethod,
+    int? orderId,
+    String? from,
+    String? to,
+    String? search,
+  }) {
+    final params = <String, String>{
+      if (inOut != null && inOut.isNotEmpty) 'in_out': inOut,
+      if (target != null && target.isNotEmpty) 'target': target,
+      if (payMethod != null && payMethod.isNotEmpty) 'pay_method': payMethod,
+      if (orderId != null) 'order_id': '$orderId',
+      if (from != null && from.isNotEmpty) 'from': from,
+      if (to != null && to.isNotEmpty) 'to': to,
+      if (search != null && search.isNotEmpty) 'search': search,
+    };
+    if (params.isEmpty) return dmAccounts;
+    final q = params.entries.map((e) =>
+      '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}').join('&');
+    return '$dmAccounts?$q';
+  }
 
 
 
@@ -184,5 +209,19 @@ class RouteHelper {
     GetPage(name: cashInHand, page: () => const CashInHandScreen()),
     GetPage(name: walletProvidedEarning, page: () => const WalletProvidedHistoryScreen()),
     GetPage(name: deliveryReviews, page: () => const DeliveryReviewsScreen()),
+    GetPage(
+      name: dmAccounts,
+      page: () => DmAccountsScreen(
+        inOut: Get.parameters['in_out'],
+        target: Get.parameters['target'],
+        payMethod: Get.parameters['pay_method'],
+        orderId: Get.parameters['order_id'] != null
+            ? int.tryParse(Get.parameters['order_id']!) : null,
+        from: Get.parameters['from'],
+        to: Get.parameters['to'],
+        search: Get.parameters['search'],
+      ),
+    ),
+
   ];
 }
