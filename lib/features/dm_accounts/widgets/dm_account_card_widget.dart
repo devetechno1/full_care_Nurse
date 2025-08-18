@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_delivery/helper/price_converter_helper.dart';
 import 'package:sixam_mart_delivery/helper/string_ex.dart';
-import 'package:sixam_mart_delivery/util/dimensions.dart';
-import 'package:sixam_mart_delivery/util/styles.dart';
-import 'package:sixam_mart_delivery/features/dm_accounts/domain/models/dm_account_model.dart';
+
+import '../../../helper/price_converter_helper.dart';
+import '../../../util/dimensions.dart';
+import '../../../util/styles.dart';
+import '../domain/models/dm_account_model.dart';
 
 class DmAccountCardWidget extends StatelessWidget {
   final DmAccountItem item;
@@ -12,19 +13,13 @@ class DmAccountCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color badgeColor = (item.inOut == 'in')
-        ? Colors.green
-        : (item.inOut == 'out')
-            ? Colors.red
-            : Theme.of(context).primaryColor;
-
     final String mainAmount = (item.value != null)
         ? PriceConverterHelper.convertPrice(item.value)
-        : '-';
+        : '';
 
     final String orderTotal = (item.orderTotal != null)
         ? PriceConverterHelper.convertPrice(item.orderTotal)
-        : '-';
+        : '';
 
     final String debtText = (item.debt != null && item.debt! > 0)
         ? PriceConverterHelper.convertPrice(item.debt)
@@ -39,7 +34,6 @@ class DmAccountCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // عرض أقصى لأي chip داخل الكارت (ناقص الهوامش الداخلية)
             final double maxChipWidth = constraints.maxWidth - 32;
 
             return Column(
@@ -47,19 +41,15 @@ class DmAccountCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
 
               children: [
-                // ===== Header: chips + date (بدون overflow) =====
                 Directionality(
                   textDirection: TextDirection.ltr,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _chip(text: (item.inOut ?? '').toUpperCase(), color: badgeColor),
-                      const SizedBox(width: 8),
-                      if ((item.target ?? '').isNotEmpty)
+                      if (item.target != null)
                         _chip(
-                          text: item.target!.tr,
-                          color: Theme.of(context).primaryColor.withOpacity(0.08),
-                          textColor: Theme.of(context).textTheme.bodyMedium?.color,
+                          text: item.target!.toString(),
+                          color: item.target!.color,
                         ),
                       const SizedBox(width: 8),
                       Expanded(
@@ -82,12 +72,13 @@ class DmAccountCardWidget extends StatelessWidget {
                 const SizedBox(height: Dimensions.paddingSizeLarge),
 
                 // ===== Main amount =====
-                Text(
-                  mainAmount,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: robotoBold.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
-                ),
+                if(mainAmount.trim().isNotEmpty)
+                  Text(
+                    mainAmount,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: robotoBold.copyWith(fontSize: Dimensions.fontSizeExtraLarge),
+                  ),
 
                 if (debtText.isNotEmpty) ...[
                   const SizedBox(height: Dimensions.paddingSizeExtraSmall),
@@ -106,13 +97,14 @@ class DmAccountCardWidget extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    if ((item.payMethod ?? '').isNotEmpty)
+                    if ((item.payMethod ?? '').trim().isNotEmpty)
                       _kvChip('${'payment_method'.tr}: ${item.payMethod!.tr}', context, maxChipWidth),
-                    if ((item.orderPayType ?? '').isNotEmpty)
+                    if ((item.orderPayType ?? '').trim().isNotEmpty)
                       _kvChip('${'order_pay_type'.tr}: ${item.orderPayType!.tr}', context, maxChipWidth),
                     if (item.orderId != null)
                       _kvChip('${'order_id'.tr}: ${item.orderId}', context, maxChipWidth),
-                    _kvChip('${'order_total'.tr}: $orderTotal', context, maxChipWidth),
+                    if(orderTotal.trim().isNotEmpty)
+                      _kvChip('${'order_total'.tr}: $orderTotal', context, maxChipWidth),
                   ],
                 ),
               ],
@@ -129,7 +121,7 @@ class DmAccountCardWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: (textColor == null) ? color.withOpacity(0.12) : color,
+        color: (textColor == null) ? color.withValues(alpha: 0.12) : color,
         borderRadius: BorderRadius.circular(100),
       ),
       child: Text(

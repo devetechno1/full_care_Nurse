@@ -1,5 +1,9 @@
 {
-  "dm_accounts": "حركات الحساب",
+  "order": "طلب",
+  "wallet_top_up": "شحن محفظة",
+  "settle_deferred_profits": "سداد أرباح مؤجلة",
+  "no_transactions_available": "لا توجد معاملات متاحة",
+  "dm_accounts": "معاملات الحساب",
   "filters": "فلاتر",
   "apply": "تطبيق",
   "reset": "إعادة تعيين",

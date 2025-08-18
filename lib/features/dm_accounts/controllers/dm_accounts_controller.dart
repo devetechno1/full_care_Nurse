@@ -6,7 +6,7 @@ class DmAccountsController extends GetxController implements GetxService {
   final DmAccountsServiceInterface service;
   DmAccountsController({required this.service});
 
-  final int defaultLimit = 5;
+  final int defaultLimit = 25;
 
   List<DmAccountItem>? _items;
   List<DmAccountItem>? get items => _items;

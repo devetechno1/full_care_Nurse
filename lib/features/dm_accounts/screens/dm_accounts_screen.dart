@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_delivery/common/widgets/custom_app_bar_widget.dart';
-import 'package:sixam_mart_delivery/common/widgets/paginated_list_view_widget.dart';
-import 'package:sixam_mart_delivery/features/dm_accounts/controllers/dm_accounts_controller.dart';
-import 'package:sixam_mart_delivery/features/dm_accounts/domain/models/dm_account_model.dart';
-import 'package:sixam_mart_delivery/features/dm_accounts/widgets/dm_account_card_widget.dart';
-import 'package:sixam_mart_delivery/features/dm_accounts/widgets/dm_accounts_filter_bar_widget.dart';
-import 'package:sixam_mart_delivery/helper/responsive_helper.dart';
-import 'package:sixam_mart_delivery/util/dimensions.dart';
+
+import '../../../common/widgets/custom_app_bar_widget.dart';
+import '../../../common/widgets/paginated_list_view_widget.dart';
+import '../../../helper/responsive_helper.dart';
+import '../../../util/dimensions.dart';
+import '../controllers/dm_accounts_controller.dart';
+import '../domain/models/dm_account_model.dart';
+import '../widgets/dm_account_card_widget.dart';
+// import '../widgets/dm_accounts_filter_bar_widget.dart';
 
 class DmAccountsScreen extends StatefulWidget {
   final String? inOut;
@@ -58,13 +59,13 @@ class _DmAccountsScreenState extends State<DmAccountsScreen> {
     return Scaffold(
       appBar: CustomAppBarWidget(
         title: 'dm_accounts'.tr,
-        isBackButtonExist: true,
+        isBackButtonExist: false,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openFilters,
-        icon: const Icon(Icons.filter_alt_outlined),
-        label: Text('filters'.tr),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: _openFilters,
+      //   icon: const Icon(Icons.filter_alt_outlined),
+      //   label: Text('filters'.tr),
+      // ),
       body: GetBuilder<DmAccountsController>(
         builder: (c) {
           if (c.items == null && c.isLoading) {
@@ -80,18 +81,17 @@ class _DmAccountsScreenState extends State<DmAccountsScreen> {
                 padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
                 children: [
                   SizedBox(height: MediaQuery.sizeOf(context).height * 0.20),
-                  Icon(Icons.receipt_long_outlined,
-                      size: 56, color: Theme.of(context).hintColor),
+                  Icon(Icons.receipt_long_outlined, size: 56, color: Theme.of(context).hintColor),
                   const SizedBox(height: Dimensions.paddingSizeSmall),
-                  Center(child: Text('no_history_available'.tr)),
+                  Center(child: Text('no_transactions_available'.tr)),
                   const SizedBox(height: Dimensions.paddingSizeLarge),
-                  Center(
-                    child: ElevatedButton.icon(
-                      onPressed: _openFilters,
-                      icon: const Icon(Icons.filter_alt_outlined),
-                      label: Text('filters'.tr),
-                    ),
-                  ),
+                  // Center(
+                  //   child: ElevatedButton.icon(
+                  //     onPressed: _openFilters,
+                  //     icon: const Icon(Icons.filter_alt_outlined),
+                  //     label: Text('filters'.tr),
+                  //   ),
+                  // ),
                 ],
               ),
             );
@@ -108,25 +108,20 @@ class _DmAccountsScreenState extends State<DmAccountsScreen> {
               productView: Expanded(
                 child: Builder(
                   builder: (context) {
-                    final bool isWide = ResponsiveHelper.isDesktop(context) ||
-                        ResponsiveHelper.isTab(context);
+                    final bool isWide = ResponsiveHelper.isDesktop(context) || ResponsiveHelper.isTab(context);
 
                     if (isWide) {
-                      final crossAxisCount =
-                          _columnsForWidth(MediaQuery.sizeOf(context).width);
+                      final crossAxisCount = _columnsForWidth(MediaQuery.sizeOf(context).width);
                       return GridView.builder(
                         controller: _scrollController,
-                        padding:
-                            const EdgeInsets.all(Dimensions.paddingSizeSmall)
-                                .copyWith(bottom: 80),
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeSmall).copyWith(bottom: 80),
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: c.items!.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
                           crossAxisSpacing: Dimensions.paddingSizeSmall,
                           mainAxisSpacing: Dimensions.paddingSizeSmall,
-                          childAspectRatio: _cardAspectRatioForWidth(
-                              MediaQuery.sizeOf(context).width),
+                          childAspectRatio: _cardAspectRatioForWidth(MediaQuery.sizeOf(context).width),
                         ),
                         itemBuilder: (context, index) {
                           getPaymentsData(c.items![index]);
@@ -136,13 +131,10 @@ class _DmAccountsScreenState extends State<DmAccountsScreen> {
                     } else {
                       return ListView.separated(
                         controller: _scrollController,
-                        padding:
-                            const EdgeInsets.all(Dimensions.paddingSizeSmall)
-                                .copyWith(bottom: 80),
+                        padding: const EdgeInsets.all(Dimensions.paddingSizeSmall).copyWith(bottom: 80),
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: c.items!.length,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(height: Dimensions.paddingSizeSmall),
+                        separatorBuilder: (_, __) => const SizedBox(height: Dimensions.paddingSizeSmall),
                         itemBuilder: (context, index) {
                           getPaymentsData(c.items![index]);
                           return DmAccountCardWidget(item: c.items![index]);
@@ -159,141 +151,141 @@ class _DmAccountsScreenState extends State<DmAccountsScreen> {
     );
   }
 
-  Future<void> _openFilters() async {
-    final c = Get.find<DmAccountsController>();
+  // Future<void> _openFilters() async {
+  //   final c = Get.find<DmAccountsController>();
 
-    if (ResponsiveHelper.isDesktop(context) ||
-        ResponsiveHelper.isTab(context)) {
-      await showDialog(
-        context: context,
-        builder: (ctx) {
-          return Dialog(
-            insetPadding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 720),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                child: DmAccountsFilterBarWidget(
-                  inOut: c.inOut,
-                  target: c.target,
-                  payMethod: c.payMethod,
-                  orderId: c.orderId,
-                  from: c.from,
-                  to: c.to,
-                  search: c.search,
-                  paymentsMethod: paymentsMethod,
-                  onApply: ({
-                    String? inOut,
-                    String? target,
-                    String? payMethod,
-                    int? orderId,
-                    String? from,
-                    String? to,
-                    String? search,
-                  }) {
-                    Navigator.of(ctx).pop();
-                    c.inOut = inOut;
-                    c.target = target;
-                    c.payMethod = payMethod;
-                    c.orderId = orderId;
-                    c.from = from;
-                    c.to = to;
-                    c.search = search;
-                    c.loadFirstPage(
-                      inOut: inOut,
-                      target: target,
-                      payMethod: payMethod,
-                      orderId: orderId,
-                      from: from,
-                      to: to,
-                      search: search,
-                    );
-                  },
-                  onReset: () {
-                    Navigator.of(ctx).pop();
-                    c.inOut = null;
-                    c.target = null;
-                    c.payMethod = null;
-                    c.orderId = null;
-                    c.from = null;
-                    c.to = null;
-                    c.search = null;
-                    c.loadFirstPage();
-                  },
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    } else {
-      await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (ctx) {
-          return FractionallySizedBox(
-            heightFactor: 0.9,
-            child: SafeArea(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(ctx).viewInsets.bottom,
-                ),
-                child: DmAccountsFilterBarWidget(
-                  inOut: c.inOut,
-                  target: c.target,
-                  payMethod: c.payMethod,
-                  orderId: c.orderId,
-                  from: c.from,
-                  to: c.to,
-                  search: c.search,
-                  paymentsMethod: paymentsMethod,
-                  onApply: ({
-                    String? inOut,
-                    String? target,
-                    String? payMethod,
-                    int? orderId,
-                    String? from,
-                    String? to,
-                    String? search,
-                  }) {
-                    Navigator.of(ctx).pop();
-                    c.inOut = inOut;
-                    c.target = target;
-                    c.payMethod = payMethod;
-                    c.orderId = orderId;
-                    c.from = from;
-                    c.to = to;
-                    c.search = search;
-                    c.loadFirstPage(
-                      inOut: inOut,
-                      target: target,
-                      payMethod: payMethod,
-                      orderId: orderId,
-                      from: from,
-                      to: to,
-                      search: search,
-                    );
-                  },
-                  onReset: () {
-                    Navigator.of(ctx).pop();
-                    c.inOut = null;
-                    c.target = null;
-                    c.payMethod = null;
-                    c.orderId = null;
-                    c.from = null;
-                    c.to = null;
-                    c.search = null;
-                    c.loadFirstPage();
-                  },
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
-  }
+  //   if (ResponsiveHelper.isDesktop(context) ||
+  //       ResponsiveHelper.isTab(context)) {
+  //     await showDialog(
+  //       context: context,
+  //       builder: (ctx) {
+  //         return Dialog(
+  //           insetPadding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+  //           child: ConstrainedBox(
+  //             constraints: const BoxConstraints(maxWidth: 720),
+  //             child: SingleChildScrollView(
+  //               padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+  //               child: DmAccountsFilterBarWidget(
+  //                 inOut: c.inOut,
+  //                 target: c.target,
+  //                 payMethod: c.payMethod,
+  //                 orderId: c.orderId,
+  //                 from: c.from,
+  //                 to: c.to,
+  //                 search: c.search,
+  //                 paymentsMethod: paymentsMethod,
+  //                 onApply: ({
+  //                   String? inOut,
+  //                   String? target,
+  //                   String? payMethod,
+  //                   int? orderId,
+  //                   String? from,
+  //                   String? to,
+  //                   String? search,
+  //                 }) {
+  //                   Navigator.of(ctx).pop();
+  //                   c.inOut = inOut;
+  //                   c.target = target;
+  //                   c.payMethod = payMethod;
+  //                   c.orderId = orderId;
+  //                   c.from = from;
+  //                   c.to = to;
+  //                   c.search = search;
+  //                   c.loadFirstPage(
+  //                     inOut: inOut,
+  //                     target: target,
+  //                     payMethod: payMethod,
+  //                     orderId: orderId,
+  //                     from: from,
+  //                     to: to,
+  //                     search: search,
+  //                   );
+  //                 },
+  //                 onReset: () {
+  //                   Navigator.of(ctx).pop();
+  //                   c.inOut = null;
+  //                   c.target = null;
+  //                   c.payMethod = null;
+  //                   c.orderId = null;
+  //                   c.from = null;
+  //                   c.to = null;
+  //                   c.search = null;
+  //                   c.loadFirstPage();
+  //                 },
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     await showModalBottomSheet(
+  //       context: context,
+  //       isScrollControlled: true,
+  //       useSafeArea: true,
+  //       builder: (ctx) {
+  //         return FractionallySizedBox(
+  //           heightFactor: 0.9,
+  //           child: SafeArea(
+  //             child: SingleChildScrollView(
+  //               padding: EdgeInsets.only(
+  //                 bottom: MediaQuery.of(ctx).viewInsets.bottom,
+  //               ),
+  //               child: DmAccountsFilterBarWidget(
+  //                 inOut: c.inOut,
+  //                 target: c.target,
+  //                 payMethod: c.payMethod,
+  //                 orderId: c.orderId,
+  //                 from: c.from,
+  //                 to: c.to,
+  //                 search: c.search,
+  //                 paymentsMethod: paymentsMethod,
+  //                 onApply: ({
+  //                   String? inOut,
+  //                   String? target,
+  //                   String? payMethod,
+  //                   int? orderId,
+  //                   String? from,
+  //                   String? to,
+  //                   String? search,
+  //                 }) {
+  //                   Navigator.of(ctx).pop();
+  //                   c.inOut = inOut;
+  //                   c.target = target;
+  //                   c.payMethod = payMethod;
+  //                   c.orderId = orderId;
+  //                   c.from = from;
+  //                   c.to = to;
+  //                   c.search = search;
+  //                   c.loadFirstPage(
+  //                     inOut: inOut,
+  //                     target: target,
+  //                     payMethod: payMethod,
+  //                     orderId: orderId,
+  //                     from: from,
+  //                     to: to,
+  //                     search: search,
+  //                   );
+  //                 },
+  //                 onReset: () {
+  //                   Navigator.of(ctx).pop();
+  //                   c.inOut = null;
+  //                   c.target = null;
+  //                   c.payMethod = null;
+  //                   c.orderId = null;
+  //                   c.from = null;
+  //                   c.to = null;
+  //                   c.search = null;
+  //                   c.loadFirstPage();
+  //                 },
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 
   int _columnsForWidth(double width) {
     if (ResponsiveHelper.isDesktop(context)) return 4;

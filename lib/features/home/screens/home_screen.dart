@@ -403,7 +403,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 if(isBatteryPermission)
                   const Padding(
-                    padding: EdgeInsets.only(right: 8.0),
+                    padding: EdgeInsetsDirectional.only(end: 8.0),
                     child: Icon(Icons.warning_rounded, color: Colors.yellow,),
                   ),
 
@@ -417,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(width: Dimensions.paddingSizeSmall),
-                    const Icon(Icons.arrow_circle_right_rounded, color: Colors.white, size: 24,),
+                    Icon(Get.locale?.languageCode == 'ar'? Icons.arrow_circle_left_rounded : Icons.arrow_circle_right_rounded, color: Colors.white, size: 24,),
                   ]),
                 ),
 
@@ -425,8 +425,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ]),
             ),
 
-            Positioned(
-              top: 5, right: 5,
+            PositionedDirectional(
+              top: 5, end: 5,
               child: InkWell(
                 onTap: closeOnTap,
                 child: const Icon(Icons.clear, color: Colors.white, size: 18),

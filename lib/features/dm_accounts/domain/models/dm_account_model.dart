@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 class DmAccountPage {
   final List<DmAccountItem> items;
   final int totalSize;
@@ -26,10 +29,48 @@ class DmAccountPage {
   }
 }
 
+enum DmItemTarget {
+  wallet("wallet_top_up"),
+  debt("settle_deferred_profits"),
+  order("order");
+
+  final String _name;
+
+  @override
+  String toString()=> _name.tr;
+
+  const DmItemTarget(this._name);
+
+  
+  factory DmItemTarget.fromJson(String? string) {
+    for (DmItemTarget e in values) {
+      if (e.name == string) return e;
+    }
+    return order;
+  }
+
+  String? get toJson {
+    if(this == order) return null;
+    return name;
+  }
+
+  Color get color {
+    switch (this) {
+      case wallet:
+        return Colors.green;
+      case debt:
+        return Colors.red;
+      case order:
+        return Get.theme.primaryColor;
+    }
+  }
+
+}
+
 class DmAccountItem {
   final int? id;
   final String? inOut;            // "in" | "out"
-  final String? target;           // "wallet" | "debt" | null
+  final DmItemTarget? target;     // "wallet" | "debt" | null
   final String? payMethod;        // "cash_on_delivery" | "digital_payment" | "vc" | ...
   final String? orderPayType;     // قد تكون null
   final int? orderId;             // قد تكون null
@@ -69,7 +110,7 @@ class DmAccountItem {
     return DmAccountItem(
       id: _i(json['id']),
       inOut: json['in_out']?.toString(),
-      target: json['target']?.toString(),
+      target: DmItemTarget.fromJson("${json['target']}"),
       payMethod: json['pay_method']?.toString(),
       orderPayType: json['order_pay_type']?.toString(),
       orderId: _i(json['order_id']),
