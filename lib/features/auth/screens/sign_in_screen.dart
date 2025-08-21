@@ -120,7 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     TextButton(
                       onPressed: () => Get.toNamed(RouteHelper.getForgotPassRoute()),
-                      child: Text('${'forgot_password'.tr}?'),
+                      child: Text('forgot_password_q'.tr),
                     ),
                   ]),
                   const SizedBox(height: 50),

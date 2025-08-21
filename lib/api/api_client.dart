@@ -144,7 +144,7 @@ class ApiClient extends GetxService {
     }else if(response0.statusCode != 200 && response0.body == null) {
       response0 = const Response(statusCode: 0, statusText: noInternetMessage);
     }
-    log('====> API Response: [${response0.statusCode}] $uri\n${jsonEncode(response0.body)}');
+    log('====> API Response: [${response0.statusCode}] $uri\n${response.body}');
     if(handleError) {
       if(response0.statusCode == 200) {
         return response0;
