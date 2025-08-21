@@ -44,7 +44,14 @@
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBdtdGl-uFTZO1mTKHDhhrPLRKOPmoD-qE"/>
+            android:value="AIzaSyDQgdcDWlNJ6o8BU3972EF8P3SKLltqFj8"/>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notification_icon" />
 
         <activity
             android:name=".MainActivity"
