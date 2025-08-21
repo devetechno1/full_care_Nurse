@@ -316,6 +316,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                     const SizedBox(height: Dimensions.paddingSizeLarge),
 
                     InfoCardWidget(
+                      showContactInfo: widget.isAcceptedOrder,
                       title: parcel ? 'receiver_details'.tr : 'customer_contact_details'.tr,
                       address: parcel ? controllerOrderModel.receiverDetails : controllerOrderModel.deliveryAddress,
                       image: parcel ? '' : controllerOrderModel.customer != null ? '${controllerOrderModel.customer!.imageFullUrl}' : '',

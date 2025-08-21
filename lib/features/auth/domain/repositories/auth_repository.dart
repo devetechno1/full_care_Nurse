@@ -51,9 +51,13 @@ class AuthRepository implements AuthRepositoryInterface {
       deviceToken = await _saveDeviceToken();
     }
     if(!GetPlatform.isWeb) {
-      FirebaseMessaging.instance.subscribeToTopic(AppConstants.topic);
-      FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
-      FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
+     try {
+        FirebaseMessaging.instance.subscribeToTopic(AppConstants.topic);
+        FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
+        FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
+     } catch (e) {
+       debugPrint(e.toString());
+     }
     }
     return await apiClient.postData(AppConstants.tokenUri, {"_method": "put", "token": getUserToken(), "fcm_token": deviceToken}, handleError: false);
   }
@@ -90,9 +94,13 @@ class AuthRepository implements AuthRepositoryInterface {
   @override
   Future<bool> clearSharedData() async {
     if(!GetPlatform.isWeb) {
-      await FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.topic);
-      FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
-      FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
+      try {
+        await FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.topic);
+        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
+        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
       apiClient.postData(AppConstants.tokenUri, {"_method": "put", "token": getUserToken()}, handleError: false);
     }
     await sharedPreferences.remove(AppConstants.token);

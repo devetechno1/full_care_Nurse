@@ -5,8 +5,8 @@ class AppConstants {
   static const String appName = 'FULL CARE PARTNER';
   static const double appVersion = 3.1; ///Flutter sdk 3.29.3
 
-  static const String baseUrl = 'http://192.168.100.200:8080/fullcareu';
-  // static const String baseUrl = 'https://fullcareu.com';
+  // static const String baseUrl = 'http://192.168.100.200:8080/fullcareu';
+  static const String baseUrl = 'https://fullcareu.com';
 
   static const String configUri = '/api/v1/config';
   static const String forgetPasswordUri = '/api/v1/auth/delivery-man/forgot-password';

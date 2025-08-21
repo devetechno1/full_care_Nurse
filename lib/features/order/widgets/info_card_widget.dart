@@ -20,8 +20,9 @@ class InfoCardWidget extends StatelessWidget {
   final Function? messageOnTap;
   final OrderModel order;
   final bool isChatAllow;
+  final bool showContactInfo;
   const InfoCardWidget({super.key, required this.title, required this.image, required this.name, required this.address, required this.phone,
-    required this.latitude, required this.longitude, required this.showButton, this.messageOnTap, this.isStore = false, required this.order, required this.isChatAllow});
+    required this.latitude, required this.longitude, required this.showButton, this.messageOnTap, this.isStore = false, required this.order, required this.isChatAllow, this.showContactInfo = true});
 
   @override
   Widget build(BuildContext context) {
@@ -74,29 +75,31 @@ class InfoCardWidget extends StatelessWidget {
 
             showButton ? Row(children: [
 
-              TextButton.icon(
-                onPressed: () async {
-                  if(await canLaunchUrlString('tel:$phone')) {
-                    launchUrlString('tel:$phone', mode: LaunchMode.externalApplication);
-                  }else {
-                    showCustomSnackBar('invalid_phone_number_found');
-                  }
-                },
-                icon: Icon(Icons.call, color: Theme.of(context).primaryColor, size: 20),
-                label: Text(
-                  'call'.tr,
-                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+              if(showContactInfo)...[
+                TextButton.icon(
+                  onPressed: () async {
+                    if(await canLaunchUrlString('tel:$phone')) {
+                      launchUrlString('tel:$phone', mode: LaunchMode.externalApplication);
+                    }else {
+                      showCustomSnackBar('invalid_phone_number_found');
+                    }
+                  },
+                  icon: Icon(Icons.call, color: Theme.of(context).primaryColor, size: 20),
+                  label: Text(
+                    'call'.tr,
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+                  ),
                 ),
-              ),
 
-              isStore && isChatAllow ? order.isGuest! ? const SizedBox() : TextButton.icon(
-                onPressed: messageOnTap as void Function()?,
-                icon: Icon(Icons.message, color: Theme.of(context).primaryColor, size: 20),
-                label: Text(
-                  'chat'.tr,
-                  style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
-                ),
-              ) : const SizedBox(),
+                isStore && isChatAllow ? order.isGuest! ? const SizedBox() : TextButton.icon(
+                  onPressed: messageOnTap as void Function()?,
+                  icon: Icon(Icons.message, color: Theme.of(context).primaryColor, size: 20),
+                  label: Text(
+                    'chat'.tr,
+                    style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
+                  ),
+                ) : const SizedBox(),
+              ],
 
               TextButton.icon(
                 onPressed: () async {
