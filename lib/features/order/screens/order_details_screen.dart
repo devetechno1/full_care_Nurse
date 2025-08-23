@@ -700,7 +700,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> with WidgetsBin
                           cod: cod! || (partialPay && controllerOrderModel.payments![1].paymentMethod == 'cash_on_delivery'),
                         ), isScrollControlled: true).then((isSuccess) {
 
-                          if(isSuccess && (cod! || (partialPay! && controllerOrderModel.payments![1].paymentMethod == 'cash_on_delivery'))){
+                          if(isSuccess == true && (cod! || (partialPay! && controllerOrderModel.payments![1].paymentMethod == 'cash_on_delivery'))){
                             Get.bottomSheet(CollectMoneyDeliverySheetWidget(
                               currentOrderModel: controllerOrderModel, verify: Get.find<SplashController>().configModel!.orderDeliveryVerification,
                               orderAmount: partialPay! ? controllerOrderModel.payments![1].amount!.toDouble() : controllerOrderModel.orderAmount,
