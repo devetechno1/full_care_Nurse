@@ -51,13 +51,12 @@ class AuthRepository implements AuthRepositoryInterface {
       deviceToken = await _saveDeviceToken();
     }
     if(!GetPlatform.isWeb) {
-     try {
-        FirebaseMessaging.instance.subscribeToTopic(AppConstants.topic);
-        FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
-        FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
-     } catch (e) {
-       debugPrint(e.toString());
-     }
+      FirebaseMessaging.instance.subscribeToTopic(AppConstants.topic);
+      final String? zoneTopic = sharedPreferences.getString(AppConstants.zoneTopic);
+      if(zoneTopic?.trim().isNotEmpty == true) FirebaseMessaging.instance.subscribeToTopic(zoneTopic!);
+
+      final String? vehicleWiseTopic = sharedPreferences.getString(AppConstants.vehicleWiseTopic);
+      if(vehicleWiseTopic?.trim().isNotEmpty == true) FirebaseMessaging.instance.subscribeToTopic(vehicleWiseTopic!);
     }
     return await apiClient.postData(AppConstants.tokenUri, {"_method": "put", "token": getUserToken(), "fcm_token": deviceToken}, handleError: false);
   }
@@ -96,8 +95,13 @@ class AuthRepository implements AuthRepositoryInterface {
     if(!GetPlatform.isWeb) {
       try {
         await FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.topic);
-        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
-        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
+
+        final String? zoneTopic = sharedPreferences.getString(AppConstants.zoneTopic);
+        if(zoneTopic?.trim().isNotEmpty == true) FirebaseMessaging.instance.unsubscribeFromTopic(zoneTopic!);
+
+        final String? vehicleWiseTopic = sharedPreferences.getString(AppConstants.vehicleWiseTopic);
+        if(vehicleWiseTopic?.trim().isNotEmpty == true) FirebaseMessaging.instance.unsubscribeFromTopic(vehicleWiseTopic!);
+
       } catch (e) {
         debugPrint(e.toString());
       }
@@ -155,8 +159,12 @@ class AuthRepository implements AuthRepositoryInterface {
       if(!GetPlatform.isWeb) {
         apiClient.postData(AppConstants.tokenUri, {"_method": "put", "token": getUserToken()}, handleError: false);
         FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.topic);
-        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
-        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.vehicleWiseTopic)!);
+
+        final String? zoneTopic = sharedPreferences.getString(AppConstants.zoneTopic);
+        if(zoneTopic?.trim().isNotEmpty == true) FirebaseMessaging.instance.unsubscribeFromTopic(zoneTopic!);
+
+        final String? vehicleWiseTopic = sharedPreferences.getString(AppConstants.vehicleWiseTopic);
+        if(vehicleWiseTopic?.trim().isNotEmpty == true) FirebaseMessaging.instance.unsubscribeFromTopic(vehicleWiseTopic!);
       }
     }
     sharedPreferences.setBool(AppConstants.notification, isActive);
